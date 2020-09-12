@@ -60,9 +60,10 @@ class Level(GameEnvironment):
     #     if symbol == key.Q:
     #         self.on_exit()
 
-    # def update(self, dt):
-    #     self.hero.update(dt)
-    #     self.map.update(dt, self.hero)
+    def update(self, dt):
+        pass
+        # self.hero.update(dt)
+        # self.map.update(dt, self.hero)
 
     def draw(self):
         super().draw();

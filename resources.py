@@ -20,7 +20,7 @@ explosion_seq2 = explosion_seq[15:] + explosion_seq[11:14]
 '''
 
 
-slash_image = pyglet.resource.image("weapons_1.png")
+# slash_image = pyglet.resource.image("weapons_1.png")
 
 
 background_image = pyglet.resource.image("Map_1_Bound.png")

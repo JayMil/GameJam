@@ -10,5 +10,5 @@ class GameEnvironment():
     def draw(self):
         self.batch.draw()
 
-    def update(self):
+    def update(self,dt):
         pass

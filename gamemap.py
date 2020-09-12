@@ -1,4 +1,7 @@
 import pyglet
+import resources
+
+
 
 class GameMap():
     def __init__(self, window, batch, group):
@@ -12,11 +15,14 @@ class GameMap():
     def create_environment(self):
         """ Create object in environment """
         objs = []
+
+
+
         return objs
 
     def create_background(self):
         ''' Create sprite for the background image '''
-        self.background_image = pyglet.sprite.Sprite(img="rescoures.Map_1_Bound", 
+        self.background_image = pyglet.sprite.Sprite(img=resources.background_image, 
                                             batch=self.batch, group=self.group, 
                                             x=0, y=0)
 
