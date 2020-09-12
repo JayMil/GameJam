@@ -2,6 +2,7 @@ import pyglet
 from pyglet.window import key
 
 import levelone
+from menu import MainMenu
 
 class GameController:
     ''' Main Game Object to handle overall game logic '''
@@ -9,12 +10,21 @@ class GameController:
         self.window = window
         self.active_env = None
         self.levelone_env = levelone.LevelOne(self.window)
-        self.start_game()
+        self.main_menu_env = MainMenu(on_start_game=self.start_game, on_exit=self.exit, window=self.window)
+        self.start_menu()
 
     def start_game(self):
         self.window.remove_handlers(self.active_env)
         self.active_env = self.levelone_env
         self.window.push_handlers(self.active_env)
+
+    def start_menu(self):
+        self.window.remove_handlers(self.active_env)
+        self.active_env = self.main_menu_env
+        self.window.push_handlers(self.active_env)
+
+    def exit(self):
+        pyglet.app.exit()
 
     def draw(self):
         ''' Main draw method '''
