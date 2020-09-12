@@ -1,5 +1,4 @@
-
-
+import pyglet
 
 class GameMap():
     def __init__(self, window, batch, group):
@@ -17,13 +16,16 @@ class GameMap():
 
     def create_background(self):
         ''' Create sprite for the background image '''
-        self.background_image = pyglet.image.load('resources.Map_1_Bound', width=self.window.width, height=self.window.height-64, batch=self.batch, group=self.group)
+        self.background_image = pyglet.sprite.Sprite(img="rescoures.Map_1_Bound", 
+                                            batch=self.batch, group=self.group, 
+                                            x=0, y=0)
+
 
 
     def handle_enviornment_collisions(self,hero):
         """ Detect and handle collisions with object and enviornment"""
         pass
-        
+
     def update(self, dt):
         pass
    
