@@ -26,8 +26,25 @@ class GameController:
         if self.active_env:
             self.active_env.update(dt)
 
-window = pyglet.window.Window(1024, 768)
-window.set_location(400, 50)
+DEBUG = True
+WIDTH = 1024
+HEIGHT = 768
+
+
+window = None
+if DEBUG:
+    window = pyglet.window.Window(width=WIDTH, height=HEIGHT)
+    display = pyglet.canvas.get_display()
+    screens = display.get_screens()
+    main_monitor = screens[0]
+    # Not working as expected. Figure out how to set to center screen
+    # window.set_location(main_monitor.width//2, main_monitor.height//2)
+    window.set_location(200, 0)
+else:
+    window = pyglet.window.Window(fullscreen=True)
+
+
+
 gameController = GameController(window)
 pyglet.clock.schedule_interval(gameController.update, 1/120.0)
 
