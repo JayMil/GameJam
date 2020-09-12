@@ -1,9 +1,9 @@
 class CollisionObject():
     
     ''' Generic collision object class '''
-    def __init__(self, start_pos, height, width, interaction):
-        self.x = start_pos[0]
-        self.y = start_pos[1]
+    def __init__(self, x, y, height, width, interaction):
+        self.x = x
+        self.y = y
         self.height = height
         self.width = width
         self.interaction = interaction
