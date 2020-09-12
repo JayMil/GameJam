@@ -6,6 +6,7 @@ class GameEnvironment():
         self.name = name
         self.window = window
         self.batch = pyglet.graphics.Batch()
+        self.group = pyglet.graphics.OrderedGroup(0)
 
     def draw(self):
         self.batch.draw()

@@ -8,7 +8,7 @@ class GameController:
     def __init__(self, window):
         self.window = window
         self.active_env = None
-        self.levelone_env = levelone.Level(self.window)
+        self.levelone_env = levelone.LevelOne(self.window)
         self.start_game()
 
     def start_game(self):

@@ -1,3 +1,5 @@
+from enum import Enum
+
 class CollisionObject():
     
     ''' Generic collision object class '''

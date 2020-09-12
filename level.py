@@ -4,22 +4,32 @@ from pyglet.window import key
 import gameenvironment
 from gameenvironment import GameEnvironment
 import gamemap
-
-import level
-from level import Level
 import resources
 
-class LevelOne(Level):
-    def __init__(self, window):
-        super().__init__(background_image=resources.background_image , name="LevelOne", window=window)
 
-        self.group = pyglet.graphics.OrderedGroup(0)
-        # self.create_labels()
+class Level(GameEnvironment):
+    def __init__(self, background_image, name, window):
+        super().__init__(name, window)
+
+        self.background_image = background_image
+        self.create_background()
+        
+
+    def create_background(self):
+        ''' Create sprite for the background image '''
+        self.background_image = pyglet.sprite.Sprite(img=self.background_image, 
+                                            batch=self.batch, group=self.group, 
+                                            x=0, y=0)
+
+        # self.background_layer = pyglet.graphics.OrderedGroup(0)
+        # self.background_overlay_layer = pyglet.graphics.OrderedGroup(1)
+        # self.foreground_underlay_layer = pyglet.graphics.OrderedGroup(2)
+        # self.foreground_layer = pyglet.graphics.OrderedGroup(3)
+        # self.foreground_overlay_layer = pyglet.graphics.OrderedGroup(4)
+        # self.fg_overlay_group = pyglet.graphics.OrderedGroup(2)
+
+        # # self.create_labels()
         # self.map = gamemap.GameMap(window, self.batch, self.background_layer)
-
-
-
-
         # self.hero = Hero(handle_sword_collisions=self.map.handle_sword_collisions, start_pos=(40, self.window.height-200), 
         #                 window=self.window, batch=self.batch, 
         #                 underlay_group=self.foreground_underlay_layer, 
