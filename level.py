@@ -20,7 +20,7 @@ class Level(GameEnvironment):
     def create_background(self):
         ''' Create sprite for the background image '''
         self.background_image = pyglet.sprite.Sprite(img=self.background_image, 
-                                            batch=self.batch, group=self.group, 
+                                            batch=self.batch, group=self.background_layer, 
                                             x=0, y=0)
             
 

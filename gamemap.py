@@ -3,7 +3,7 @@ import resources
 
 import collisionobject
 from collisionobject import CollisionObject
-from collisionobject import InteractionEnum
+from collisionobject import Interaction
 
 class GameMap():
     def __init__(self, window, batch, group):
@@ -18,10 +18,10 @@ class GameMap():
         """ Create object in environment """
         objs = []
 
-        # border_object_1 = CollisionObject(x=0, y=0, height=32, width=32, interaction=InteractionEnum.BLOCKING)
-        # border_object_2 = CollisionObject(x=0, y=0, height=32, width=32, interaction=InteractionEnum.BLOCKING)
-        # border_object_3 = CollisionObject(x=0, y=0, height=32, width=32, interaction=InteractionEnum.BLOCKING)
-        # border_object_4 = CollisionObject(x=0, y=0, height=32, width=32, interaction=InteractionEnum.BLOCKING)
+        # border_object_1 = CollisionObject(x=0, y=0, height=32, width=32, interaction=Interaction.BLOCKING)
+        # border_object_2 = CollisionObject(x=0, y=0, height=32, width=32, interaction=Interaction.BLOCKING)
+        # border_object_3 = CollisionObject(x=0, y=0, height=32, width=32, interaction=Interaction.BLOCKING)
+        # border_object_4 = CollisionObject(x=0, y=0, height=32, width=32, interaction=Interaction.BLOCKING)
 
         objs.append(border_object_1)
 

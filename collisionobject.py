@@ -29,7 +29,7 @@ class CollisionObject():
         else:
             return False
 
-class InteractionEnum(Enum):
+class Interaction(Enum):
     BLOCKING = 1
     MOVABLE = 2
     NONE = 3
