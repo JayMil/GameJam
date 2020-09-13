@@ -17,6 +17,8 @@ from collisionobject import Interaction
 from inventory import Inventory
 from movablerock import MovableRock
 
+from healthpotion import HealthPotion
+
 class LevelOne(Level):
     def __init__(self, window, *args, **kwargs):
         super().__init__(background_image=resources.background_image , name="LevelOne", window=window, *args, **kwargs)
@@ -29,7 +31,7 @@ class LevelOne(Level):
 
         self.inventory = Inventory(batch=self.batch, foreground_underlay_layer=self.foreground_underlay_layer, foreground_layer=self.foreground_layer, foreground_overlay_layer=self.foreground_overlay_layer)
 
-        self.hero = Hero(x=tile_size*4, y=tile_size*15, 
+        self.hero = Hero(self.inventory.update_inventory, x=tile_size*4, y=tile_size*15, 
                             window=self.window, batch=self.batch, 
                             group=self.foreground_layer)
         
@@ -80,9 +82,11 @@ class LevelOne(Level):
         self.level_bounds.append(border_object_12)
         self.level_bounds.append(border_object_13)
 
-        self.level_objects.append(MovableRock(tile_size*2,tile_size*4, self.window, group=self.background_overlay_layer, batch=self.batch))
-        self.level_objects.append(MovableRock(tile_size*26,tile_size*15, self.window, group=self.background_overlay_layer, batch=self.batch))
-        self.level_objects.append(MovableRock(tile_size*23,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(MovableRock(tile_size*2,tile_size*4, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(MovableRock(tile_size*26,tile_size*15, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(MovableRock(tile_size*23,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
+
+        self.level_interactable_objects.append(HealthPotion(tile_size*16,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
 
     # def create_labels(self):
     #     ''' Create helper lables '''
@@ -119,6 +123,7 @@ class LevelOne(Level):
     def update(self, dt):
         self.hero.update(dt)
         self.handle_environment_collisions(self.hero)
+        self.handle_interactable_object_collisions(self.hero)
         for enemy in self.enemies:
             enemy.update(dt)
         # self.map.update(dt, self.hero)

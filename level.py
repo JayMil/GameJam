@@ -7,6 +7,7 @@ import gamemap
 import resources
 from race import Facing
 
+from healthpotion import HealthPotion
 
 class Level(GameEnvironment):
     def __init__(self, background_image, name, window, *args, **kwargs):
@@ -15,7 +16,7 @@ class Level(GameEnvironment):
         self.background_image = background_image
         self.create_background()
         self.level_bounds = []
-        self.level_objects = []
+        self.level_interactable_objects = []
 
         
 
@@ -32,18 +33,35 @@ class Level(GameEnvironment):
             if obj.collides_with(other_object):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
-                        other_object.hit_box.y -= other_object.speed
+                        other_object.hit_box.y -= other_object.current_speed
                     elif other_object.moving.peek() == Facing.DOWN:
-                        other_object.hit_box.y += other_object.speed
+                        other_object.hit_box.y += other_object.current_speed
                     elif other_object.moving.peek() == Facing.LEFT:
-                        other_object.hit_box.x += other_object.speed  
+                        other_object.hit_box.x += other_object.current_speed
                     elif other_object.moving.peek() == Facing.RIGHT:
-                        other_object.hit_box.x -= other_object.speed
+                        other_object.hit_box.x -= other_object.current_speed
                     else:
                         print("Unhandled Collision!")
+        
+    def handle_interactable_object_collisions(self, other_object):
+        """ Detect and handle collisions with object and enviornment"""
+
+        items_to_delete = []
 
 
+        for obj in self.level_interactable_objects:
+            if obj.hit_box.collides_with(other_object.hit_box):
+                if type(obj) is HealthPotion:
+                    print("Pick up potion!")
+                    items_to_delete.append(obj)
 
+        if items_to_delete != []:
+            for obj in items_to_delete:
+                self.level_interactable_objects.remove(obj)
+                
+
+
+        
         # self.background_layer = pyglet.graphics.OrderedGroup(0)
         # self.background_overlay_layer = pyglet.graphics.OrderedGroup(1)
         # self.foreground_underlay_layer = pyglet.graphics.OrderedGroup(2)

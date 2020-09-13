@@ -1,6 +1,7 @@
 from pyglet import shapes
 import pyglet
 import resources
+from enum import Enum
 
 class InventorySprite(pyglet.sprite.Sprite):
     ''' A health bar sprite '''
@@ -65,6 +66,14 @@ class Inventory():
                                     batch=self.batch, group=self.foreground_layer)
         self.health_potion_sprite.visible = False
 
+    def update_inventory(self, value, inventory_type):
+        if inventory_type.HEALTH:
+            update_health(value)
+        elif inventory_type.HEALING_POTIONS:
+            update_potions(value)
+
+
+
     # Update the health bar to the new health. Health is assumed to be based on 100 max health.
     def update_health(self, new_health):
         # Go through all of the hearts and change the image to an empty heart for any that represent health higher than what the player has.
@@ -74,12 +83,16 @@ class Inventory():
             else:
                 obj.visible = True
 
-    # def update_potions_count(self, new_potions_count):
-    #     # print(new_potions_count)
-    #     self.health_potion_counter.text = str(new_potions_count)
+    def update_potions(self, new_potions_count):
+        # print(new_potions_count)
+        self.health_potion_counter.text = str(new_potions_count)
 
-    #     if new_potions_count == 0:
-    #         self.health_potion_counter.text = ""
-    #         self.health_potion_sprite.visible = False
-    #     else:
-    #         self.health_potion_sprite.visible = True   
+        if new_potions_count == 0:
+            self.health_potion_counter.text = ""
+            self.health_potion_sprite.visible = False
+        else:
+            self.health_potion_sprite.visible = True   
+
+class InventoryType(Enum):
+    HEALTH = 1
+    HEALING_POTIONS = 2
