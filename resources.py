@@ -36,6 +36,7 @@ rock_water_image = pyglet.resource.image("Rock_In_Water.png")
 
 character_image = pyglet.resource.image("Character.png")
 enemy_image = pyglet.resource.image("Dragons.png")
+character_attack_image = pyglet.resource.image("Sword_Animations.png")
 
 class CharacterSeq():
     def __init__(self, image):
@@ -66,6 +67,17 @@ class RaceImages():
 class HeroImages(RaceImages):
     def __init__(self, *args, **kwargs):
         super().__init__(image=character_image, *args, **kwargs)
+
+        self.seq_attack = pyglet.image.ImageGrid(character_attack_image, 4, 3)
+        self.seq_attack_up = self.seq_attack[:2]
+        self.seq_attack_right = self.seq_attack[3:5]
+        self.seq_attack_left = self.seq_attack[6:8]
+        self.seq_attack_down = self.seq_attack[9:11]
+        
+        self.attack_up = pyglet.image.Animation.from_image_sequence(self.seq_attack_up, duration=0.1,loop=True)
+        self.attack_down = pyglet.image.Animation.from_image_sequence(self.seq_attack_down, duration=0.1,loop=True)
+        self.attack_left = pyglet.image.Animation.from_image_sequence(self.seq_attack_left, duration=0.1,loop=True)
+        self.attack_right = pyglet.image.Animation.from_image_sequence(self.seq_attack_right, duration=0.1,loop=True)
 
         '''
 

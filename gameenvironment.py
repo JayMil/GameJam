@@ -14,6 +14,7 @@ class GameEnvironment():
         self.foreground_layer = pyglet.graphics.OrderedGroup(3)
         self.foreground_overlay_layer = pyglet.graphics.OrderedGroup(4)
         self.debug = debug
+        self.handlers = []
 
     def draw(self):
         self.batch.draw()

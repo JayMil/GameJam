@@ -15,20 +15,19 @@ class Race(PhysicalSpriteObject):
         self.health = health
 
         self.moving = Stack()
+        self.facing = Facing.DOWN
 
         self.speed = speed
         self.current_speed = speed
-        self.fast = False
 
         self.inventory = []
         self.displayed_items  = []
 
     def update(self, dt):
         speed = self.current_speed
-        if self.fast:
-            speed *= 2
 
         if self.moving:
+            self.facing = self.moving.peek()
             if self.moving.peek() == Facing.UP:
                 if self.image != self.race_images.walk_up:
                     self.image = self.race_images.walk_up
@@ -76,9 +75,9 @@ class Race(PhysicalSpriteObject):
         self.x = self.hit_box.x
         self.y = self.hit_box.y
 
-        self.current_speed = self.speed
 
     def on_key_press(self, symbol, modifiers):
+        print(f"pressed key {symbol}")
         if symbol == key.UP:
             self.moving.push(Facing.UP)
 
@@ -91,11 +90,9 @@ class Race(PhysicalSpriteObject):
         if symbol == key.RIGHT:
             self.moving.push(Facing.RIGHT)
 
-        if symbol == key.F:
-            self.fast = True
-
 
     def on_key_release(self, symbol, modifiers):
+        print(f"released key {symbol}")
         if symbol == key.UP:
             self.moving.pop(Facing.UP)
 
@@ -108,8 +105,8 @@ class Race(PhysicalSpriteObject):
         if symbol == key.RIGHT:
             self.moving.pop(Facing.RIGHT)
             
-        if symbol == key.F:
-            self.fast = False
+        if self.moving:
+            self.facing = self.moving.peek()
 
 class Stack():
     def __init__(self):
@@ -126,7 +123,6 @@ class Stack():
             self.list.remove(item)
         else:
             return self.list.pop()
-
 
     def peek(self):
         return self.list[len(self.list)-1]

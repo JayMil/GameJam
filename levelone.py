@@ -36,7 +36,7 @@ class LevelOne(Level):
                             group=self.foreground_layer)
         
 
-        self.window.push_handlers(self.hero)
+        self.handlers.append(self.hero)
 
         self.enemies = []
         self.enemies.append(Enemy(x=tile_size*8, y=tile_size*15, 
