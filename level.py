@@ -32,13 +32,13 @@ class Level(GameEnvironment):
             if obj.collides_with(other_object):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
-                        other_object.hit_box.y -= other_object.speed
+                        other_object.hit_box.y -= other_object.current_speed
                     elif other_object.moving.peek() == Facing.DOWN:
-                        other_object.hit_box.y += other_object.speed
+                        other_object.hit_box.y += other_object.current_speed
                     elif other_object.moving.peek() == Facing.LEFT:
-                        other_object.hit_box.x += other_object.speed  
+                        other_object.hit_box.x += other_object.current_speed  
                     elif other_object.moving.peek() == Facing.RIGHT:
-                        other_object.hit_box.x -= other_object.speed
+                        other_object.hit_box.x -= other_object.current_speed
                     else:
                         print("Unhandled Collision!")
 
