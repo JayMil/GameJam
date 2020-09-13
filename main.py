@@ -4,12 +4,14 @@ from pyglet.window import key
 import levelone
 from menu import MainMenu
 
+DEBUG = False
+
 class GameController:
     ''' Main Game Object to handle overall game logic '''
     def __init__(self, window):
         self.window = window
         self.active_env = None
-        self.levelone_env = levelone.LevelOne(self.window)
+        self.levelone_env = levelone.LevelOne(self.window, debug=DEBUG)
         self.main_menu_env = MainMenu(on_start_game=self.start_game, on_exit=self.exit, window=self.window)
         self.start_menu()
 
@@ -36,7 +38,7 @@ class GameController:
         if self.active_env:
             self.active_env.update(dt)
 
-DEBUG = True
+
 WIDTH = 1024
 HEIGHT = 768
 

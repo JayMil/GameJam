@@ -8,11 +8,13 @@ import resources
 
 
 class Level(GameEnvironment):
-    def __init__(self, background_image, name, window):
-        super().__init__(name, window)
+    def __init__(self, background_image, name, window, *args, **kwargs):
+        super().__init__(name, window, *args, **kwargs)
 
         self.background_image = background_image
         self.create_background()
+        self.level_bounds = []
+
         
 
     def create_background(self):
@@ -20,6 +22,9 @@ class Level(GameEnvironment):
         self.background_image = pyglet.sprite.Sprite(img=self.background_image, 
                                             batch=self.batch, group=self.group, 
                                             x=0, y=0)
+            
+
+
 
         # self.background_layer = pyglet.graphics.OrderedGroup(0)
         # self.background_overlay_layer = pyglet.graphics.OrderedGroup(1)

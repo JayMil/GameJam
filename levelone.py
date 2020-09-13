@@ -8,18 +8,52 @@ import gamemap
 import level
 from level import Level
 import resources
+import collisionobject
+from collisionobject import CollisionObject
+from collisionobject import InteractionEnum
 
 class LevelOne(Level):
-    def __init__(self, window):
-        super().__init__(background_image=resources.background_image , name="LevelOne", window=window)
+    def __init__(self, window, *args, **kwargs):
+        super().__init__(background_image=resources.background_image , name="LevelOne", window=window, *args, **kwargs)
 
-        self.group = pyglet.graphics.OrderedGroup(0)
+        
         # self.create_labels()
         # self.map = gamemap.GameMap(window, self.batch, self.background_layer)
 
+        self.create_level_bounds()
 
 
+    def create_level_bounds(self):
+        """ Create object in environment """
+        tile_size = 32
 
+        border_object_1 = CollisionObject(x=0, y=tile_size*5, height=288, width=tile_size*1, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_2 = CollisionObject(x=0, y=448, height=256, width=tile_size*2, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_3 = CollisionObject(x=tile_size*2, y=672, height=tile_size*1, width=352, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_4 = CollisionObject(x=416, y=tile_size*20, height=tile_size*2, width=tile_size*15, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_5 = CollisionObject(x=896, y=288, height=416, width=128, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_6 = CollisionObject(x=tile_size*2, y=tile_size*6, height=32, width=64, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_7 = CollisionObject(x=tile_size*23, y=tile_size*17, height=tile_size*2, width=tile_size*1, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_8 = CollisionObject(x=tile_size*25, y=tile_size*14, height=tile_size*3, width=tile_size*1, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_9 = CollisionObject(x=tile_size*26, y=tile_size*18, height=tile_size*1, width=tile_size*2, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_10 = CollisionObject(x=tile_size*0, y=tile_size*3, height=tile_size*2, width=tile_size*2, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_11 = CollisionObject(x=tile_size*0, y=tile_size*0, height=tile_size*3, width=tile_size*32, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_12 = CollisionObject(x=tile_size*4, y=tile_size*3, height=tile_size*2, width=tile_size*7, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+        border_object_13 = CollisionObject(x=tile_size*28, y=tile_size*3, height=tile_size*4, width=tile_size*4, interaction=InteractionEnum.BLOCKING, group=self.group1, batch=self.debug_batch, color=(255, 255, 0))
+
+        self.level_bounds.append(border_object_1)
+        self.level_bounds.append(border_object_2)
+        self.level_bounds.append(border_object_3)
+        self.level_bounds.append(border_object_4)
+        self.level_bounds.append(border_object_5)
+        self.level_bounds.append(border_object_6)
+        self.level_bounds.append(border_object_7)
+        self.level_bounds.append(border_object_8)
+        self.level_bounds.append(border_object_9)
+        self.level_bounds.append(border_object_10)
+        self.level_bounds.append(border_object_11)
+        self.level_bounds.append(border_object_12)
+        self.level_bounds.append(border_object_13)
         # self.hero = Hero(handle_sword_collisions=self.map.handle_sword_collisions, start_pos=(40, self.window.height-200), 
         #                 window=self.window, batch=self.batch, 
         #                 underlay_group=self.foreground_underlay_layer, 

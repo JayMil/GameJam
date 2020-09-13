@@ -1,14 +1,18 @@
 from enum import Enum
+import pyglet
 
 class CollisionObject():
     
     ''' Generic collision object class '''
-    def __init__(self, x, y, height, width, interaction):
+    def __init__(self, x, y, height, width, interaction, group=None, batch=None, color=(255,255,255)):
         self.x = x
         self.y = y
         self.height = height
         self.width = width
         self.interaction = interaction
+
+        
+        self.rectangle = pyglet.shapes.Rectangle(self.x, self.y, self.width, self.height, group=group, batch=batch, color=color)
 
     def collides_with(self, other_object):
         # rectangle collision
