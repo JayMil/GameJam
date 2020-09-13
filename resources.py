@@ -31,41 +31,37 @@ yellow_rock_image = pyglet.resource.image("Yellow_Rock.png")
 rock_water_image = pyglet.resource.image("Rock_In_Water.png")
 
 character_image = pyglet.resource.image("Character.png")
-character_seq = pyglet.image.ImageGrid(character_image, 4, 3)
-character_seq_walk_up = character_seq[:2]
-character_seq_walk_right = character_seq[3:5]
-character_seq_walk_left = character_seq[6:8]
-character_seq_walk_down = character_seq[9:11]
+enemy_image = pyglet.resource.image("enemy.png")
 
-character_face_up = character_seq[1]
-character_face_right = character_seq[4]
-character_face_left = character_seq[7]
-character_face_down = character_seq[10]
+class CharacterSeq():
+    def __init__(self, image):
+        self.seq = pyglet.image.ImageGrid(image, 4, 3)
+        self.seq_walk_up = self.seq[:2]
+        self.seq_walk_right = self.seq[3:5]
+        self.seq_walk_left = self.seq[6:8]
+        self.seq_walk_down = self.seq[9:11]
 
+        self.face_up = self.seq[1]
+        self.face_right = self.seq[4]
+        self.face_left = self.seq[7]
+        self.face_down = self.seq[10]
 
 class RaceImages():
-    def __init__(self):
-        self.walk_up = None
-        self.walk_down = None
-        self.walk_left = None
-        self.walk_right = None
+    def __init__(self, image):
+        character_seq = CharacterSeq(image)
+        self.walk_up = pyglet.image.Animation.from_image_sequence(character_seq.seq_walk_up, duration=0.1,loop=True)
+        self.walk_down = pyglet.image.Animation.from_image_sequence(character_seq.seq_walk_down, duration=0.1,loop=True)
+        self.walk_left = pyglet.image.Animation.from_image_sequence(character_seq.seq_walk_left, duration=0.1,loop=True)
+        self.walk_right = pyglet.image.Animation.from_image_sequence(character_seq.seq_walk_right, duration=0.1,loop=True)
 
-        self.face_up = None
-        self.face_down = None
-        self.face_left = None
-        self.face_right = None
+        self.face_up = character_seq.face_up
+        self.face_down = character_seq.face_down
+        self.face_left = character_seq.face_left
+        self.face_right = character_seq.face_right
 
-class HeroImages():
-    def __init__(self):
-        self.walk_up = pyglet.image.Animation.from_image_sequence(character_seq_walk_up, duration=0.1,loop=True)
-        self.walk_down = pyglet.image.Animation.from_image_sequence(character_seq_walk_down, duration=0.1,loop=True)
-        self.walk_left = pyglet.image.Animation.from_image_sequence(character_seq_walk_left, duration=0.1,loop=True)
-        self.walk_right = pyglet.image.Animation.from_image_sequence(character_seq_walk_right, duration=0.1,loop=True)
-
-        self.face_up = character_face_up
-        self.face_down = character_face_down
-        self.face_left = character_face_left
-        self.face_right = character_face_right
+class HeroImages(RaceImages):
+    def __init__(self, *args, **kwargs):
+        super().__init__(image=character_image, *args, **kwargs)
 
         '''
 
@@ -76,4 +72,8 @@ class HeroImages():
         self.sword_still = sword_still
 
         '''
+
+class EnemyImages(RaceImages):
+    def __init__(self, *args, **kwargs):
+        super().__init__(image=enemy_image, *args, **kwargs)
 

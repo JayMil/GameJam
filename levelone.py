@@ -5,6 +5,7 @@ import gameenvironment
 from gameenvironment import GameEnvironment
 import gamemap
 from hero import Hero
+from enemy import Enemy
 
 import level
 from level import Level
@@ -27,6 +28,13 @@ class LevelOne(Level):
                             group=self.foreground_layer)
 
         self.window.push_handlers(self.hero)
+
+        self.enemies = []
+        self.enemies.append(Enemy(x=tile_size*8, y=tile_size*15, 
+                                    target=self.hero,
+                                    window=self.window, batch=self.batch, 
+                                    group=self.foreground_layer))
+
 
         self.create_level_bounds()
 
@@ -98,6 +106,8 @@ class LevelOne(Level):
 
     def update(self, dt):
         self.hero.update(dt)
+        for enemy in self.enemies:
+            enemy.update(dt)
         # self.map.update(dt, self.hero)
 
     def draw(self):
