@@ -27,7 +27,7 @@ heart_holder = pyglet.resource.image("heart_holder.png")
 backpack_inventory = pyglet.resource.image("backpack_inventory.png")
 health_potion = pyglet.resource.image("health_potion.png")
 
-background_image = pyglet.resource.image("Map_1_Bound.png")
+background_image = pyglet.resource.image("Map1.png")
 rock_image = pyglet.resource.image("Normal_Rock.png")
 pink_rock_image = pyglet.resource.image("Pink_Rock.png")
 blue_rock_image = pyglet.resource.image("Blue_Rock.png")

@@ -77,7 +77,6 @@ class Race(PhysicalSpriteObject):
 
 
     def on_key_press(self, symbol, modifiers):
-        print(f"pressed key {symbol}")
         if symbol == key.UP:
             self.moving.push(Facing.UP)
 
@@ -92,7 +91,6 @@ class Race(PhysicalSpriteObject):
 
 
     def on_key_release(self, symbol, modifiers):
-        print(f"released key {symbol}")
         if symbol == key.UP:
             self.moving.pop(Facing.UP)
 
