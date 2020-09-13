@@ -43,6 +43,18 @@ character_face_left = character_seq[7]
 character_face_down = character_seq[10]
 
 
+class RaceImages():
+    def __init__(self):
+        self.walk_up = None
+        self.walk_down = None
+        self.walk_left = None
+        self.walk_right = None
+
+        self.face_up = None
+        self.face_down = None
+        self.face_left = None
+        self.face_right = None
+
 class HeroImages():
     def __init__(self):
         self.walk_up = pyglet.image.Animation.from_image_sequence(character_seq_walk_up, duration=0.1,loop=True)
