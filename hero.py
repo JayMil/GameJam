@@ -15,7 +15,6 @@ class Hero(Race):
     def __init__(self, x=20, y=200, health=5, *args, **kwargs):
         super().__init__(img=HERO_IMAGES.face_down, x=x, y=y, health=health, *args, **kwargs)
 
-        self.facing = Facing.DOWN
         self.moving = []
 
         # adjust hit box height
@@ -26,19 +25,19 @@ class Hero(Race):
         super().update(dt)
 
         if self.moving:
-            if self.facing == Facing.UP:
+            if self.moving[0] == Facing.UP:
                 if self.image != HERO_IMAGES.walk_up:
                     self.image = HERO_IMAGES.walk_up
                 self.hit_box.y += self.speed
-            elif self.facing == Facing.DOWN:
+            elif self.moving[0] == Facing.DOWN:
                 if self.image != HERO_IMAGES.walk_down:
                     self.image = HERO_IMAGES.walk_down
                 self.hit_box.y -= self.speed
-            elif self.facing == Facing.LEFT:
+            elif self.moving[0] == Facing.LEFT:
                 if self.image != HERO_IMAGES.walk_left:
                     self.image = HERO_IMAGES.walk_left
                 self.hit_box.x -= self.speed
-            elif self.facing == Facing.RIGHT:
+            elif self.moving[0] == Facing.RIGHT:
                 if self.image != HERO_IMAGES.walk_right:
                     self.image = HERO_IMAGES.walk_right
                 self.hit_box.x += self.speed
@@ -56,20 +55,16 @@ class Hero(Race):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
-            self.moving.append(Facing.UP)
-            self.facing = Facing.UP
+            self.moving.insert(0, Facing.UP)
 
         if symbol == key.DOWN:
-            self.moving.append(Facing.DOWN)
-            self.facing = Facing.DOWN
+            self.moving.insert(0, Facing.DOWN)
 
         if symbol == key.LEFT:
-            self.moving.append(Facing.LEFT)
-            self.facing = Facing.LEFT
+            self.moving.insert(0, Facing.LEFT)
 
         if symbol == key.RIGHT:
-            self.moving.append(Facing.RIGHT)
-            self.facing = Facing.RIGHT
+            self.moving.insert(0, Facing.RIGHT)
 
         if symbol == key.F:
             self.fast = True
