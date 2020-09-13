@@ -1,6 +1,5 @@
 from enum import Enum
 import pyglet
-from pyglet.window import key
 
 import resources
 from physicalspriteobject import PhysicalSpriteObject
@@ -8,15 +7,10 @@ from collisionobject import Interaction
 from race import Race, Facing
 
 
-HERO_IMAGES = resources.HeroImages()
-
 class Hero(Race):
     ''' Hero Sprite Class '''
     def __init__(self, x=20, y=200, health=5, *args, **kwargs):
-        super().__init__(img=HERO_IMAGES.face_down, x=x, y=y, health=health, *args, **kwargs)
-
-        self.facing = Facing.DOWN
-        self.moving = []
+        super().__init__(race_images=resources.HeroImages(), x=x, y=y, health=health, *args, **kwargs)
 
 
 
@@ -28,69 +22,28 @@ class Hero(Race):
     def update(self, dt):
         super().update(dt)
 
-        if self.moving:
-            if self.facing == Facing.UP:
-                if self.image != HERO_IMAGES.walk_up:
-                    self.image = HERO_IMAGES.walk_up
-                self.hit_box.y += self.speed
-            elif self.facing == Facing.DOWN:
-                if self.image != HERO_IMAGES.walk_down:
-                    self.image = HERO_IMAGES.walk_down
-                self.hit_box.y -= self.speed
-            elif self.facing == Facing.LEFT:
-                if self.image != HERO_IMAGES.walk_left:
-                    self.image = HERO_IMAGES.walk_left
-                self.hit_box.x -= self.speed
-            elif self.facing == Facing.RIGHT:
-                if self.image != HERO_IMAGES.walk_right:
-                    self.image = HERO_IMAGES.walk_right
-                self.hit_box.x += self.speed
+        if self.fast:
+            self.speed = 4
         else:
-            # if not moving, set to still image
-            if self.image == HERO_IMAGES.walk_up:
-                self.image = HERO_IMAGES.face_up
-            elif self.image == HERO_IMAGES.walk_down:
-                self.image = HERO_IMAGES.face_down
-            elif self.image == HERO_IMAGES.walk_left:
-                self.image = HERO_IMAGES.face_left
-            elif self.image == HERO_IMAGES.walk_right:
-                self.image = HERO_IMAGES.face_right
+            self.speed = 2
 
+        # prevent going out of border
+        min_x = 0
+        min_y = 0
+        max_x = self.window.width
+        max_y = self.window.height
 
-    def on_key_press(self, symbol, modifiers):
-        if symbol == key.UP:
-            self.moving.append(Facing.UP)
-            self.facing = Facing.UP
+        if self.hit_box.x < min_x:
+            self.hit_box.x = min_x
+        elif (self.hit_box.x+self.hit_box.width) > max_x:
+            self.hit_box.x = (max_x - self.hit_box.width)
+        if self.hit_box.y < min_y:
+            self.hit_box.y = min_y
+        elif (self.hit_box.y+self.hit_box.height) > max_y:
+            self.hit_box.y = (max_y - self.hit_box.height)
 
-        if symbol == key.DOWN:
-            self.moving.append(Facing.DOWN)
-            self.facing = Facing.DOWN
-
-        if symbol == key.LEFT:
-            self.moving.append(Facing.LEFT)
-            self.facing = Facing.LEFT
-
-        if symbol == key.RIGHT:
-            self.moving.append(Facing.RIGHT)
-            self.facing = Facing.RIGHT
-
-        if symbol == key.F:
-            self.fast = True
-
-
-    def on_key_release(self, symbol, modifiers):
-        if symbol == key.UP:
-            self.moving.remove(Facing.UP)
-
-        if symbol == key.DOWN:
-            self.moving.remove(Facing.DOWN)
-
-        if symbol == key.LEFT:
-            self.moving.remove(Facing.LEFT)
-
-        if symbol == key.RIGHT:
-            self.moving.remove(Facing.RIGHT)
-            
-        if symbol == key.F:
-            self.fast = False
+        xdiff = self.x - self.hit_box.x
+        ydiff = self.y - self.hit_box.y
+        self.x = self.hit_box.x
+        self.y = self.hit_box.y
 
