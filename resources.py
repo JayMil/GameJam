@@ -35,7 +35,7 @@ yellow_rock_image = pyglet.resource.image("Yellow_Rock.png")
 rock_water_image = pyglet.resource.image("Rock_In_Water.png")
 
 character_image = pyglet.resource.image("Character.png")
-enemy_image = pyglet.resource.image("enemy.png")
+enemy_image = pyglet.resource.image("Dragons.png")
 
 class CharacterSeq():
     def __init__(self, image):
