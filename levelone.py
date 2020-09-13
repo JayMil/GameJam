@@ -15,6 +15,7 @@ from collisionobject import CollisionObject
 from collisionobject import Interaction
 
 from inventory import Inventory
+from movablerock import MovableRock
 
 class LevelOne(Level):
     def __init__(self, window, *args, **kwargs):
@@ -79,6 +80,9 @@ class LevelOne(Level):
         self.level_bounds.append(border_object_12)
         self.level_bounds.append(border_object_13)
 
+        self.level_objects.append(MovableRock(tile_size*2,tile_size*4, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_objects.append(MovableRock(tile_size*26,tile_size*15, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_objects.append(MovableRock(tile_size*23,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
 
     # def create_labels(self):
     #     ''' Create helper lables '''
@@ -114,6 +118,7 @@ class LevelOne(Level):
 
     def update(self, dt):
         self.hero.update(dt)
+        self.handle_environment_collisions(self.hero)
         for enemy in self.enemies:
             enemy.update(dt)
         # self.map.update(dt, self.hero)

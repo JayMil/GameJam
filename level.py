@@ -5,6 +5,7 @@ import gameenvironment
 from gameenvironment import GameEnvironment
 import gamemap
 import resources
+from race import Facing
 
 
 class Level(GameEnvironment):
@@ -14,6 +15,7 @@ class Level(GameEnvironment):
         self.background_image = background_image
         self.create_background()
         self.level_bounds = []
+        self.level_objects = []
 
         
 
@@ -23,19 +25,20 @@ class Level(GameEnvironment):
                                             batch=self.batch, group=self.background_layer, 
                                             x=0, y=0)
             
-    def handle_environment_collisions(self):
+    def handle_environment_collisions(self, other_object):
         """ Detect and handle collisions with object and enviornment"""
+
         for obj in self.level_bounds:
-            if obj.collides_with(self.hero.hit_box):    
-                if self.hero.moving:
-                    if hero.facing == Facing.UP:
-                        self.hero.hit_box.y -= hero.speed
-                    elif self.hero.facing == Facing.DOWN:
-                        self.hero.hit_box.y += hero.speed
-                    elif self.hero.facing == Facing.LEFT:
-                        self.hero.hit_box.x += hero.speed
-                    elif self.hero.facing == Facing.RIGHT:
-                        self.hero.hit_box.x -= hero.speed
+            if obj.collides_with(other_object):
+                if other_object.moving:
+                    if other_object.moving.peek() == Facing.UP:
+                        other_object.hit_box.y -= other_object.speed
+                    elif other_object.moving.peek() == Facing.DOWN:
+                        other_object.hit_box.y += other_object.speed
+                    elif other_object.moving.peek() == Facing.LEFT:
+                        other_object.hit_box.x += other_object.speed  
+                    elif other_object.moving.peek() == Facing.RIGHT:
+                        other_object.hit_box.x -= other_object.speed
                     else:
                         print("Unhandled Collision!")
 
@@ -59,45 +62,18 @@ class Level(GameEnvironment):
         # self.window.push_handlers(self.hero)
 
 
-    # def create_labels(self):
-    #     ''' Create helper lables '''
-    #     self.title = pyglet.text.Label('Top - View Proof of Concept',
-    #                                 font_name='Times New Roman',
-    #                                 font_size=24,
-    #                                 x=self.window.width//2, y=self.window.height-30,
-    #                                 anchor_x='center', batch=self.batch,
-    #                                 group=self.foreground_layer)
-
-
-    #     pyglet.text.Label('Move with direction keys',
-    #                                 font_name='Times New Roman',
-    #                                 font_size=16,
-    #                                 x=20, y=self.window.height-60,
-    #                                 batch=self.batch, group=self.foreground_layer)
-
-    #     pyglet.text.Label("Move fast with 'f' key",
-    #                                 font_name='Times New Roman',
-    #                                 font_size=16,
-    #                                 x=20, y=self.window.height-90,
-    #                                 batch=self.batch, group=self.foreground_layer)
-
-    #     pyglet.text.Label("Press 'q' to quit",
-    #                                 font_name='Times New Roman',
-    #                                 font_size=16,
-    #                                 x=20, y=self.window.height-120,
-    #                                 batch=self.batch, group=self.foreground_layer)
 
     # def on_key_press(self, symbol, modifiers):
     #     if symbol == key.Q:
     #         self.on_exit()
 
     def update(self, dt):
-        self.handle_environment_collisions()
+        pass
         # self.hero.update(dt)
         # self.map.update(dt, self.hero)
 
     def draw(self):
-        super().draw();
+        super().draw()
 
         '''
         # DEBUG

@@ -58,7 +58,7 @@ class Inventory():
 
         self.backpack_inventory = InventorySprite(tile_size*30, tile_size*22, img=resources.backpack_inventory, batch=self.batch, group=self.foreground_underlay_layer)
         self.health_potion_sprite = InventorySprite(tile_size*30.5, tile_size*22.5, img=resources.health_potion, batch=self.batch, group=self.foreground_layer)
-        self.health_potion_counter = pyglet.text.Label('0',
+        self.health_potion_counter = pyglet.text.Label('',
                                     font_name='Arial',
                                     font_size=10,
                                     x=self.health_potion_sprite.x+28, y=self.health_potion_sprite.y-4,
