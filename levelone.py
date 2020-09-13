@@ -4,6 +4,7 @@ from pyglet.window import key
 import gameenvironment
 from gameenvironment import GameEnvironment
 import gamemap
+from hero import Hero
 
 
 class Level(GameEnvironment):
@@ -15,17 +16,15 @@ class Level(GameEnvironment):
         self.foreground_underlay_layer = pyglet.graphics.OrderedGroup(2)
         self.foreground_layer = pyglet.graphics.OrderedGroup(3)
         self.foreground_overlay_layer = pyglet.graphics.OrderedGroup(4)
-        self.fg_overlay_group = pyglet.graphics.OrderedGroup(2)
 
         # self.create_labels()
+        tile_size=32
         self.map = gamemap.GameMap(window, self.batch, self.background_layer)
-        # self.hero = Hero(handle_sword_collisions=self.map.handle_sword_collisions, start_pos=(40, self.window.height-200), 
-        #                 window=self.window, batch=self.batch, 
-        #                 underlay_group=self.foreground_underlay_layer, 
-        #                 overlay_group=self.foreground_overlay_layer,
-        #                 group=self.foreground_layer)
+        self.hero = Hero(x=tile_size*4, y=tile_size*15, 
+                            window=self.window, batch=self.batch, 
+                            group=self.foreground_layer)
 
-        # self.window.push_handlers(self.hero)
+        self.window.push_handlers(self.hero)
 
 
     # def create_labels(self):
@@ -61,8 +60,7 @@ class Level(GameEnvironment):
     #         self.on_exit()
 
     def update(self, dt):
-        pass
-        # self.hero.update(dt)
+        self.hero.update(dt)
         # self.map.update(dt, self.hero)
 
     def draw(self):

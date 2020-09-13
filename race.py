@@ -1,10 +1,11 @@
 from enum import Enum
 
 from physicalspriteobject import PhysicalSpriteObject
+from collisionobject import Interaction
 
 class Race(PhysicalSpriteObject):
     def __init__(self, health, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(interaction=Interaction.BLOCKING, *args, **kwargs)
         
         self.health = health
 
