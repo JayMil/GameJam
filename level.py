@@ -23,6 +23,21 @@ class Level(GameEnvironment):
                                             batch=self.batch, group=self.background_layer, 
                                             x=0, y=0)
             
+    def handle_environment_collisions(self):
+        """ Detect and handle collisions with object and enviornment"""
+        for obj in self.level_bounds:
+            if obj.collides_with(self.hero.hit_box):    
+                if self.hero.moving:
+                    if hero.facing == Facing.UP:
+                        self.hero.hit_box.y -= hero.speed
+                    elif self.hero.facing == Facing.DOWN:
+                        self.hero.hit_box.y += hero.speed
+                    elif self.hero.facing == Facing.LEFT:
+                        self.hero.hit_box.x += hero.speed
+                    elif self.hero.facing == Facing.RIGHT:
+                        self.hero.hit_box.x -= hero.speed
+                    else:
+                        print("Unhandled Collision!")
 
 
 
@@ -77,7 +92,7 @@ class Level(GameEnvironment):
     #         self.on_exit()
 
     def update(self, dt):
-        pass
+        self.handle_environment_collisions()
         # self.hero.update(dt)
         # self.map.update(dt, self.hero)
 

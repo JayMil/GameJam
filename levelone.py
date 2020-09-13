@@ -13,6 +13,8 @@ import collisionobject
 from collisionobject import CollisionObject
 from collisionobject import Interaction
 
+from inventory import Inventory
+
 class LevelOne(Level):
     def __init__(self, window, *args, **kwargs):
         super().__init__(background_image=resources.background_image , name="LevelOne", window=window, *args, **kwargs)
@@ -22,9 +24,13 @@ class LevelOne(Level):
         # self.map = gamemap.GameMap(window, self.batch, self.background_layer)
 
         tile_size=32
+
+        self.inventory = Inventory(batch=self.batch, foreground_underlay_layer=self.foreground_underlay_layer, foreground_layer=self.foreground_layer, foreground_overlay_layer=self.foreground_overlay_layer)
+
         self.hero = Hero(x=tile_size*4, y=tile_size*15, 
                             window=self.window, batch=self.batch, 
                             group=self.foreground_layer)
+        
 
         self.window.push_handlers(self.hero)
 
@@ -35,19 +41,21 @@ class LevelOne(Level):
         """ Create object in environment """
         tile_size = 32
 
-        border_object_1 = CollisionObject(x=0, y=tile_size*5, height=288, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_2 = CollisionObject(x=0, y=448, height=256, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_3 = CollisionObject(x=tile_size*2, y=672, height=tile_size*1, width=352, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_4 = CollisionObject(x=416, y=tile_size*20, height=tile_size*2, width=tile_size*15, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_5 = CollisionObject(x=896, y=288, height=416, width=128, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_6 = CollisionObject(x=tile_size*2, y=tile_size*6, height=32, width=64, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_7 = CollisionObject(x=tile_size*23, y=tile_size*17, height=tile_size*2, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_8 = CollisionObject(x=tile_size*25, y=tile_size*14, height=tile_size*3, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_9 = CollisionObject(x=tile_size*26, y=tile_size*18, height=tile_size*1, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_10 = CollisionObject(x=tile_size*0, y=tile_size*3, height=tile_size*2, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_11 = CollisionObject(x=tile_size*0, y=tile_size*0, height=tile_size*3, width=tile_size*32, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_12 = CollisionObject(x=tile_size*4, y=tile_size*3, height=tile_size*2, width=tile_size*7, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
-        border_object_13 = CollisionObject(x=tile_size*28, y=tile_size*3, height=tile_size*4, width=tile_size*4, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=(255, 255, 0))
+        block_color=(100,100,100)
+
+        border_object_1 = CollisionObject(x=0, y=tile_size*5, height=288, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_2 = CollisionObject(x=0, y=448, height=256, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_3 = CollisionObject(x=tile_size*2, y=672, height=tile_size*1, width=352, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_4 = CollisionObject(x=416, y=tile_size*20, height=tile_size*2, width=tile_size*15, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_5 = CollisionObject(x=896, y=288, height=416, width=128, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_6 = CollisionObject(x=tile_size*2, y=tile_size*6, height=32, width=64, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_7 = CollisionObject(x=tile_size*23, y=tile_size*17, height=tile_size*2, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_8 = CollisionObject(x=tile_size*25, y=tile_size*14, height=tile_size*3, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_9 = CollisionObject(x=tile_size*26, y=tile_size*18, height=tile_size*1, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_10 = CollisionObject(x=tile_size*0, y=tile_size*3, height=tile_size*2, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_11 = CollisionObject(x=tile_size*0, y=tile_size*0, height=tile_size*3, width=tile_size*32, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_12 = CollisionObject(x=tile_size*4, y=tile_size*3, height=tile_size*2, width=tile_size*7, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_13 = CollisionObject(x=tile_size*28, y=tile_size*3, height=tile_size*4, width=tile_size*4, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
 
         self.level_bounds.append(border_object_1)
         self.level_bounds.append(border_object_2)

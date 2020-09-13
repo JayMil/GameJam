@@ -21,7 +21,11 @@ explosion_seq2 = explosion_seq[15:] + explosion_seq[11:14]
 
 
 # slash_image = pyglet.resource.image("weapons_1.png")
-
+health_bar_heart_empty = pyglet.resource.image("health_bar_heart_empty.png")
+health_bar_heart = pyglet.resource.image("health_bar_heart.png")
+heart_holder = pyglet.resource.image("heart_holder.png")
+backpack_inventory = pyglet.resource.image("backpack_inventory.png")
+health_potion = pyglet.resource.image("health_potion.png")
 
 background_image = pyglet.resource.image("Map_1_Bound.png")
 rock_image = pyglet.resource.image("Normal_Rock.png")

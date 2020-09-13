@@ -18,6 +18,9 @@ class Hero(Race):
         self.facing = Facing.DOWN
         self.moving = []
 
+
+
+
         # adjust hit box height
         #print(self.height)
         #self.hit_box.height -= 55
