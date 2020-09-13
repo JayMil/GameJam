@@ -16,14 +16,24 @@ class GameController:
         self.start_menu()
 
     def start_game(self):
-        self.window.remove_handlers(self.active_env)
+        if self.active_env:
+            for handler in self.active_env.handlers:
+                self.window.remove_handlers(handler)
+            self.window.remove_handlers(self.active_env)
         self.active_env = self.levelone_env
         self.window.push_handlers(self.active_env)
+        for handler in self.active_env.handlers:
+            self.window.push_handlers(handler)
 
     def start_menu(self):
-        self.window.remove_handlers(self.active_env)
+        if self.active_env:
+            for handler in self.active_env.handlers:
+                self.window.remove_handlers(handler)
+            self.window.remove_handlers(self.active_env)
         self.active_env = self.main_menu_env
         self.window.push_handlers(self.active_env)
+        for handler in self.active_env.handlers:
+            self.window.push_handlers(handler)
 
     def exit(self):
         pyglet.app.exit()

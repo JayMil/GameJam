@@ -15,6 +15,7 @@ class Race(PhysicalSpriteObject):
         self.health = health
 
         self.moving = Stack()
+        self.facing = Facing.DOWN
 
         self.speed = speed
         self.current_speed = speed
@@ -26,6 +27,7 @@ class Race(PhysicalSpriteObject):
         speed = self.current_speed
 
         if self.moving:
+            self.facing = self.moving.peek()
             if self.moving.peek() == Facing.UP:
                 if self.image != self.race_images.walk_up:
                     self.image = self.race_images.walk_up
@@ -75,6 +77,7 @@ class Race(PhysicalSpriteObject):
 
 
     def on_key_press(self, symbol, modifiers):
+        print(f"pressed key {symbol}")
         if symbol == key.UP:
             self.moving.push(Facing.UP)
 
@@ -89,6 +92,7 @@ class Race(PhysicalSpriteObject):
 
 
     def on_key_release(self, symbol, modifiers):
+        print(f"released key {symbol}")
         if symbol == key.UP:
             self.moving.pop(Facing.UP)
 
@@ -101,6 +105,8 @@ class Race(PhysicalSpriteObject):
         if symbol == key.RIGHT:
             self.moving.pop(Facing.RIGHT)
             
+        if self.moving:
+            self.facing = self.moving.peek()
 
 class Stack():
     def __init__(self):
@@ -117,7 +123,6 @@ class Stack():
             self.list.remove(item)
         else:
             return self.list.pop()
-
 
     def peek(self):
         return self.list[len(self.list)-1]
