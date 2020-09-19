@@ -8,6 +8,9 @@ import resources
 from race import Facing
 
 from healthpotion import HealthPotion
+from movablerock import MovableRock
+
+from inventory import InventoryType
 
 class Level(GameEnvironment):
     def __init__(self, background_image, name, window, *args, **kwargs):
@@ -30,7 +33,7 @@ class Level(GameEnvironment):
         """ Detect and handle collisions with object and enviornment"""
 
         for obj in self.level_bounds:
-            if obj.collides_with(other_object):
+            if obj.collides_with(other_object.hit_box):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
                         other_object.hit_box.y -= other_object.current_speed
@@ -52,8 +55,29 @@ class Level(GameEnvironment):
         for obj in self.level_interactable_objects:
             if obj.hit_box.collides_with(other_object.hit_box):
                 if type(obj) is HealthPotion:
-                    print("Pick up potion!")
                     items_to_delete.append(obj)
+                    other_object.update_stats(1, InventoryType.HEALING_POTIONS)
+                elif type(obj) is MovableRock:
+                    if other_object.moving:
+                        if other_object.moving.peek() == Facing.UP:
+                            other_object.hit_box.y -= other_object.current_speed * 0.75
+                            obj.y += other_object.current_speed * 0.25
+                            obj.hit_box.y += other_object.current_speed * 0.25
+                        elif other_object.moving.peek() == Facing.DOWN:
+                            other_object.hit_box.y += other_object.current_speed * 0.75
+                            obj.y -= other_object.current_speed * 0.25
+                            obj.hit_box.y -= other_object.current_speed * 0.25
+                        elif other_object.moving.peek() == Facing.LEFT:
+                            other_object.hit_box.x += other_object.current_speed * 0.75
+                            obj.x -= other_object.current_speed * 0.25
+                            obj.hit_box.x -= other_object.current_speed * 0.25
+                        elif other_object.moving.peek() == Facing.RIGHT:
+                            other_object.hit_box.x -= other_object.current_speed * 0.75
+                            obj.x += other_object.current_speed * 0.25
+                            obj.hit_box.x += other_object.current_speed * 0.25
+                        else:
+                            print("Unhandled Collision!")
+
 
         if items_to_delete != []:
             for obj in items_to_delete:

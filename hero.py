@@ -7,24 +7,63 @@ from physicalspriteobject import PhysicalSpriteObject
 from collisionobject import Interaction
 from race import Race, Facing
 
+from inventory import InventoryType
 
 class Hero(Race):
     ''' Hero Sprite Class '''
     def __init__(self, update_inventory, x=20, y=200, health=5, *args, **kwargs):
         super().__init__(race_images=resources.HeroImages(), x=x, y=y, health=health, *args, **kwargs)
 
+
+
         self.update_inventory = update_inventory
+        self.inventory.update({"health_potion":0})
+
+
+
+
+
+
+        # make hit_box smaller so that the player can move around easier.
+        self.hit_box.height = 10
+    
+
 
         # adjust hit box height
         #print(self.height)
         #self.hit_box.height -= 55
 
     def update_stats(self, value, stat_type):
-        pass
+        if stat_type == InventoryType.HEALTH:
+            if value + self.health > 5:
+                self.health = 5
+            elif value + self.health < 0:
+                self.health = 0
+            else:
+                self.health += value
+            
+            self.update_inventory(self.health, stat_type)
+        elif stat_type == InventoryType.HEALING_POTIONS:
+
+            if self.inventory["health_potion"] + value < 0:
+                self.inventory["health_potion"] = 0
+            else:
+                self.inventory["health_potion"] += value
+
+            new_potion_count = self.inventory["health_potion"]
+            self.update_inventory(new_potion_count, stat_type)
+         
+
+
+        
+
 
         
     def update(self, dt):
         super().update(dt)
+
+    def update_health():
+        pass
 
     def on_key_press(self, symbol, modifiers):
         super().on_key_press(symbol, modifiers)

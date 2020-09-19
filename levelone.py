@@ -88,6 +88,9 @@ class LevelOne(Level):
 
         self.level_interactable_objects.append(HealthPotion(tile_size*16,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
 
+        self.level_interactable_objects.append(HealthPotion(tile_size*7,tile_size*8, self.window, group=self.background_overlay_layer, batch=self.batch))
+
+        self.level_interactable_objects.append(HealthPotion(tile_size*9,tile_size*13, self.window, group=self.background_overlay_layer, batch=self.batch))
     # def create_labels(self):
     #     ''' Create helper lables '''
     #     self.title = pyglet.text.Label('Top - View Proof of Concept',

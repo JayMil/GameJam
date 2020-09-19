@@ -67,10 +67,10 @@ class Inventory():
         self.health_potion_sprite.visible = False
 
     def update_inventory(self, value, inventory_type):
-        if inventory_type.HEALTH:
-            update_health(value)
-        elif inventory_type.HEALING_POTIONS:
-            update_potions(value)
+        if inventory_type == inventory_type.HEALTH:
+            self.update_health(value)
+        elif inventory_type == inventory_type.HEALING_POTIONS:
+            self.update_potions(value)
 
 
 
@@ -84,14 +84,16 @@ class Inventory():
                 obj.visible = True
 
     def update_potions(self, new_potions_count):
-        # print(new_potions_count)
+    
         self.health_potion_counter.text = str(new_potions_count)
 
         if new_potions_count == 0:
             self.health_potion_counter.text = ""
             self.health_potion_sprite.visible = False
         else:
+            self.health_potion_counter.text = str(new_potions_count)
             self.health_potion_sprite.visible = True   
+            
 
 class InventoryType(Enum):
     HEALTH = 1
