@@ -37,12 +37,16 @@ class Level(GameEnvironment):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
                         other_object.hit_box.y -= other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.DOWN:
                         other_object.hit_box.y += other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.LEFT:
                         other_object.hit_box.x += other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.RIGHT:
                         other_object.hit_box.x -= other_object.current_speed
+                        break
                     else:
                         print("Unhandled Collision!")
         
@@ -60,21 +64,66 @@ class Level(GameEnvironment):
                 elif type(obj) is MovableRock:
                     if other_object.moving:
                         if other_object.moving.peek() == Facing.UP:
-                            other_object.hit_box.y -= other_object.current_speed * 0.75
-                            obj.y += other_object.current_speed * 0.25
-                            obj.hit_box.y += other_object.current_speed * 0.25
+                            bound_collision = False
+                            for level_bound in self.level_bounds:
+                                if obj.hit_box.collides_with(level_bound):
+                                    bound_collision = True
+                                    break
+                            if bound_collision:
+                                other_object.hit_box.y -= other_object.current_speed * 2
+                                obj.y -= other_object.current_speed
+                                obj.hit_box.y -= other_object.current_speed
+                            else:
+                                other_object.hit_box.y -= other_object.current_speed * 0.75
+                                obj.y += other_object.current_speed * 0.25
+                                obj.hit_box.y += other_object.current_speed * 0.25
+
+
                         elif other_object.moving.peek() == Facing.DOWN:
-                            other_object.hit_box.y += other_object.current_speed * 0.75
-                            obj.y -= other_object.current_speed * 0.25
-                            obj.hit_box.y -= other_object.current_speed * 0.25
+                            bound_collision = False
+                            for level_bound in self.level_bounds:
+                                if obj.hit_box.collides_with(level_bound):
+                                    bound_collision = True   
+                                    break 
+                            if bound_collision:
+                                other_object.hit_box.y += other_object.current_speed * 2
+                                obj.y += other_object.current_speed
+                                obj.hit_box.y += other_object.current_speed
+                            else:
+                                other_object.hit_box.y += other_object.current_speed * 0.75
+                                obj.y -= other_object.current_speed * 0.25
+                                obj.hit_box.y -= other_object.current_speed * 0.25
+
                         elif other_object.moving.peek() == Facing.LEFT:
-                            other_object.hit_box.x += other_object.current_speed * 0.75
-                            obj.x -= other_object.current_speed * 0.25
-                            obj.hit_box.x -= other_object.current_speed * 0.25
+                            bound_collision = False
+                            for level_bound in self.level_bounds:
+                                if obj.hit_box.collides_with(level_bound):
+                                    bound_collision = True
+                                    break
+                            if bound_collision:
+                                other_object.hit_box.x += other_object.current_speed * 2
+                                obj.x += other_object.current_speed
+                                obj.hit_box.x += other_object.current_speed  
+                            else:
+                                other_object.hit_box.x += other_object.current_speed * 0.75
+                                obj.x -= other_object.current_speed * 0.25
+                                obj.hit_box.x -= other_object.current_speed * 0.25
+
+
                         elif other_object.moving.peek() == Facing.RIGHT:
-                            other_object.hit_box.x -= other_object.current_speed * 0.75
-                            obj.x += other_object.current_speed * 0.25
-                            obj.hit_box.x += other_object.current_speed * 0.25
+                            for level_bound in self.level_bounds:
+                                bound_collision = False
+                                if obj.hit_box.collides_with(level_bound):
+                                    bound_collision = True
+                                    break
+                            if bound_collision:
+                                other_object.hit_box.x -= other_object.current_speed * 2
+                                obj.x -= other_object.current_speed 
+                                obj.hit_box.x -= other_object.current_speed
+                            else:
+                                other_object.hit_box.x -= other_object.current_speed * 0.75
+                                obj.x += other_object.current_speed * 0.25
+                                obj.hit_box.x += other_object.current_speed * 0.25
                         else:
                             print("Unhandled Collision!")
 

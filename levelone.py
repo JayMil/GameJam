@@ -125,8 +125,11 @@ class LevelOne(Level):
 
     def update(self, dt):
         self.hero.update(dt)
-        self.handle_environment_collisions(self.hero)
-        self.handle_interactable_object_collisions(self.hero)
+
+        if self.hero.moving:
+            self.handle_environment_collisions(self.hero)
+            self.handle_interactable_object_collisions(self.hero)
+
         for enemy in self.enemies:
             enemy.update(dt)
         # self.map.update(dt, self.hero)
