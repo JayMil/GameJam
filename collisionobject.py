@@ -32,4 +32,5 @@ class CollisionObject():
 class Interaction(Enum):
     BLOCKING = 1
     MOVABLE = 2
-    NONE = 3
+    SHALLOW_WATER = 3
+    NONE = 4
