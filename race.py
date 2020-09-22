@@ -4,6 +4,8 @@ from pyglet.window import key
 from physicalspriteobject import PhysicalSpriteObject
 from collisionobject import Interaction
 
+from inventory import InventoryType
+
 class Race(PhysicalSpriteObject):
     def __init__(self, health, race_images, speed=2, *args, **kwargs):
         super().__init__(img=race_images.face_down, 
@@ -20,8 +22,8 @@ class Race(PhysicalSpriteObject):
         self.speed = speed
         self.current_speed = speed
 
-        self.inventory = []
-        self.displayed_items  = []
+        self.inventory = {}
+        # self.displayed_items  = []
 
     def update(self, dt):
         speed = self.current_speed
@@ -102,6 +104,16 @@ class Race(PhysicalSpriteObject):
 
         if symbol == key.RIGHT:
             self.moving.pop(Facing.RIGHT)
+
+        if symbol == key.P:
+            if "health_potion" in self.inventory:
+                if self.inventory["health_potion"] > 0:
+                    self.update_stats(-1, InventoryType.HEALING_POTIONS)
+                    self.update_stats(1, InventoryType.HEALTH)
+
+        if symbol == key.T:     
+            if self.health > 1:
+                self.update_stats(-1, InventoryType.HEALTH)  
             
         if self.moving:
             self.facing = self.moving.peek()

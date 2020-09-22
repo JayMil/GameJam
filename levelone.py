@@ -68,6 +68,10 @@ class LevelOne(Level):
         border_object_12 = CollisionObject(x=tile_size*4, y=tile_size*3, height=tile_size*2, width=tile_size*7, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
         border_object_13 = CollisionObject(x=tile_size*28, y=tile_size*3, height=tile_size*4, width=tile_size*4, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
 
+        border_object_14 = CollisionObject(x=tile_size*16, y=tile_size*13, height=tile_size*1, width=tile_size*12, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_15 = CollisionObject(x=tile_size*13, y=tile_size*12, height=tile_size*3, width=tile_size*3, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_16 = CollisionObject(x=tile_size*28, y=tile_size*7, height=tile_size*2, width=tile_size*4, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+
         self.level_bounds.append(border_object_1)
         self.level_bounds.append(border_object_2)
         self.level_bounds.append(border_object_3)
@@ -81,6 +85,9 @@ class LevelOne(Level):
         self.level_bounds.append(border_object_11)
         self.level_bounds.append(border_object_12)
         self.level_bounds.append(border_object_13)
+        self.level_bounds.append(border_object_14)
+        self.level_bounds.append(border_object_15)
+        self.level_bounds.append(border_object_16)
 
         self.level_interactable_objects.append(MovableRock(tile_size*2,tile_size*4, self.window, group=self.background_overlay_layer, batch=self.batch))
         self.level_interactable_objects.append(MovableRock(tile_size*26,tile_size*15, self.window, group=self.background_overlay_layer, batch=self.batch))
@@ -88,6 +95,9 @@ class LevelOne(Level):
 
         self.level_interactable_objects.append(HealthPotion(tile_size*16,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
 
+        self.level_interactable_objects.append(HealthPotion(tile_size*7,tile_size*8, self.window, group=self.background_overlay_layer, batch=self.batch))
+
+        self.level_interactable_objects.append(HealthPotion(tile_size*9,tile_size*13, self.window, group=self.background_overlay_layer, batch=self.batch))
     # def create_labels(self):
     #     ''' Create helper lables '''
     #     self.title = pyglet.text.Label('Top - View Proof of Concept',
@@ -122,8 +132,11 @@ class LevelOne(Level):
 
     def update(self, dt):
         self.hero.update(dt)
-        self.handle_environment_collisions(self.hero)
-        self.handle_interactable_object_collisions(self.hero)
+
+        if self.hero.moving:
+            self.handle_environment_collisions(self.hero)
+            self.handle_interactable_object_collisions(self.hero)
+
         for enemy in self.enemies:
             enemy.update(dt)
         # self.map.update(dt, self.hero)

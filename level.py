@@ -8,6 +8,10 @@ import resources
 from race import Facing
 
 from healthpotion import HealthPotion
+from movablerock import MovableRock
+
+from inventory import InventoryType
+from collisionobject import Interaction
 
 class Level(GameEnvironment):
     def __init__(self, background_image, name, window, *args, **kwargs):
@@ -30,16 +34,20 @@ class Level(GameEnvironment):
         """ Detect and handle collisions with object and enviornment"""
 
         for obj in self.level_bounds:
-            if obj.collides_with(other_object):
+            if obj.collides_with(other_object.hit_box):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
                         other_object.hit_box.y -= other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.DOWN:
                         other_object.hit_box.y += other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.LEFT:
                         other_object.hit_box.x += other_object.current_speed
+                        break
                     elif other_object.moving.peek() == Facing.RIGHT:
                         other_object.hit_box.x -= other_object.current_speed
+                        break
                     else:
                         print("Unhandled Collision!")
         
@@ -52,8 +60,54 @@ class Level(GameEnvironment):
         for obj in self.level_interactable_objects:
             if obj.hit_box.collides_with(other_object.hit_box):
                 if type(obj) is HealthPotion:
-                    print("Pick up potion!")
                     items_to_delete.append(obj)
+                    other_object.update_stats(1, InventoryType.HEALING_POTIONS)
+                elif type(obj) is MovableRock:
+                    if other_object.moving:
+                        if other_object.moving.peek() == Facing.UP:
+                            other_object.hit_box.y -= other_object.current_speed * 0.75
+                            obj.y += other_object.current_speed * 0.25
+                            obj.hit_box.y += other_object.current_speed * 0.25
+
+                            if self.check_if_rock_collides_with_bounds(obj):
+                                other_object.hit_box.y -= other_object.current_speed * 0.25
+                                obj.y -= other_object.current_speed * 0.25
+                                obj.hit_box.y -= other_object.current_speed * 0.25
+
+                        elif other_object.moving.peek() == Facing.DOWN:
+                            other_object.hit_box.y += other_object.current_speed * 0.75
+                            obj.y -= other_object.current_speed * 0.25
+                            obj.hit_box.y -= other_object.current_speed * 0.25
+
+                            if self.check_if_rock_collides_with_bounds(obj):
+
+                                other_object.hit_box.y += other_object.current_speed * 0.25
+                                obj.y += other_object.current_speed * 0.25
+                                obj.hit_box.y += other_object.current_speed * 0.25
+
+                        elif other_object.moving.peek() == Facing.LEFT:
+                            other_object.hit_box.x += other_object.current_speed * 0.75
+                            obj.x -= other_object.current_speed * 0.25
+                            obj.hit_box.x -= other_object.current_speed * 0.25
+
+                            if self.check_if_rock_collides_with_bounds(obj):
+                                other_object.hit_box.x += other_object.current_speed * 0.25
+                                obj.x += other_object.current_speed * 0.25
+                                obj.hit_box.x += other_object.current_speed * 0.25
+
+                        elif other_object.moving.peek() == Facing.RIGHT:
+                            other_object.hit_box.x -= other_object.current_speed * 0.75
+                            obj.x += other_object.current_speed * 0.25
+                            obj.hit_box.x += other_object.current_speed * 0.25
+
+                            if self.check_if_rock_collides_with_bounds(obj):
+                                other_object.hit_box.x -= other_object.current_speed * 0.25
+                                obj.x -= other_object.current_speed * 0.25
+                                obj.hit_box.x -= other_object.current_speed * 0.25
+
+                        else:
+                            print("Unhandled Collision!")
+
 
         if items_to_delete != []:
             for obj in items_to_delete:
@@ -84,6 +138,15 @@ class Level(GameEnvironment):
     # def on_key_press(self, symbol, modifiers):
     #     if symbol == key.Q:
     #         self.on_exit()
+
+
+    def check_if_rock_collides_with_bounds(self, obj):
+        for level_bound in self.level_bounds:
+            if obj.hit_box.collides_with(level_bound):
+                if level_bound.interaction == Interaction.BLOCKING:
+                    return True
+                    break
+      
 
     def update(self, dt):
         pass
