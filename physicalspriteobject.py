@@ -8,4 +8,6 @@ class PhysicalSpriteObject(pyglet.sprite.Sprite):
         super().__init__(*args, **kwargs)
 
         self.window = window
-        self.hit_box = CollisionObject(self.x, self.y, self.width, self.height, interaction)
+        self.hit_boxes = {}
+        self.hit_boxes["sprite"]  = CollisionObject(self.x, self.y, self.width, self.height, interaction)
+        self.hit_box = self.hit_boxes["sprite"]

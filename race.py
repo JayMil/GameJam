@@ -3,6 +3,7 @@ from pyglet.window import key
 
 from physicalspriteobject import PhysicalSpriteObject
 from collisionobject import Interaction
+from collisionobject import CollisionObject
 
 from inventory import InventoryType
 
@@ -23,29 +24,34 @@ class Race(PhysicalSpriteObject):
         self.current_speed = speed
 
         self.inventory = {}
-        # self.displayed_items  = []
+
+        self.hit_boxes["feet"] = CollisionObject(self.x, self.y, self.width, self.height, self.hit_boxes["sprite"].interaction)
+        self.hit_boxes["body"] = CollisionObject(self.x, self.y, self.width, self.height, self.hit_boxes["sprite"].interaction)
 
     def update(self, dt):
         speed = self.current_speed
+
+        ydiff = 0
+        xdiff = 0
 
         if self.moving:
             self.facing = self.moving.peek()
             if self.moving.peek() == Facing.UP:
                 if self.image != self.race_images.walk_up:
                     self.image = self.race_images.walk_up
-                self.hit_box.y += speed
+                ydiff += speed
             elif self.moving.peek() == Facing.DOWN:
                 if self.image != self.race_images.walk_down:
                     self.image = self.race_images.walk_down
-                self.hit_box.y -= speed
+                ydiff -= speed
             elif self.moving.peek() == Facing.LEFT:
                 if self.image != self.race_images.walk_left:
                     self.image = self.race_images.walk_left
-                self.hit_box.x -= speed
+                xdiff -= speed
             elif self.moving.peek() == Facing.RIGHT:
                 if self.image != self.race_images.walk_right:
                     self.image = self.race_images.walk_right
-                self.hit_box.x += speed
+                xdiff += speed
         else:
             # if not moving, set to still image
             if self.image == self.race_images.walk_up:
@@ -57,25 +63,32 @@ class Race(PhysicalSpriteObject):
             elif self.image == self.race_images.walk_right:
                 self.image = self.race_images.face_right
 
+        self.update_pos(xdiff, ydiff)
+
+    def update_pos(self, xdiff, ydiff):
         # prevent going out of border
         min_x = 0
         min_y = 0
         max_x = self.window.width
         max_y = self.window.height
 
-        if self.hit_box.x < min_x:
-            self.hit_box.x = min_x
-        elif (self.hit_box.x+self.hit_box.width) > max_x:
-            self.hit_box.x = (max_x - self.hit_box.width)
-        if self.hit_box.y < min_y:
-            self.hit_box.y = min_y
-        elif (self.hit_box.y+self.hit_box.height) > max_y:
-            self.hit_box.y = (max_y - self.hit_box.height)
+        if (self.hit_boxes["feet"].x + xdiff) < min_x:
+            xdiff = self.hit_boxes["feet"].x - min_x
+        elif (self.hit_boxes["feet"].x+self.hit_boxes["feet"].width+xdiff) > max_x:
+            xdiff = self.hit_boxes["feet"].x - (max_x - self.hit_boxes["feet"].width)
+        if (self.hit_boxes["feet"].y + ydiff) < min_y:
+            ydiff = self.hit_boxes["feet"].y - min_y
+        elif (self.hit_boxes["feet"].y+self.hit_boxes["feet"].height + ydiff) > max_y:
+            ydiff = self.hit_boxes["feet"].y - (max_y - self.hit_boxes["feet"].height)
 
-        xdiff = self.x - self.hit_box.x
-        ydiff = self.y - self.hit_box.y
-        self.x = self.hit_box.x
-        self.y = self.hit_box.y
+
+        for key in self.hit_boxes:
+            self.hit_boxes[key].x += xdiff
+            self.hit_boxes[key].y += ydiff
+            
+        self.x += xdiff
+        self.y += ydiff
+
 
 
     def on_key_press(self, symbol, modifiers):

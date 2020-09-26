@@ -20,18 +20,13 @@ class Hero(Race):
         self.inventory.update({"health_potion":0})
 
 
-
-
-
-
-        # make hit_box smaller so that the player can move around easier.
-        self.hit_box.height = 10
+        # make feet hit_box smaller so that the player can move around easier.
+        self.hit_boxes["feet"].x += 42
+        self.hit_boxes["feet"].y += 32
+        self.hit_boxes["feet"].height = 5
+        self.hit_boxes["feet"].width = 15
     
 
-
-        # adjust hit box height
-        #print(self.height)
-        #self.hit_box.height -= 55
 
     def update_stats(self, value, stat_type):
         if stat_type == InventoryType.HEALTH:
@@ -56,8 +51,6 @@ class Hero(Race):
 
 
         
-
-
         
     def update(self, dt):
         super().update(dt)

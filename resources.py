@@ -34,17 +34,17 @@ blue_rock_image = pyglet.resource.image("Blue_Rock.png")
 yellow_rock_image = pyglet.resource.image("Yellow_Rock.png")
 rock_water_image = pyglet.resource.image("Rock_In_Water.png")
 
-character_image = pyglet.resource.image("Character.png")
+character_image = pyglet.resource.image("Character2.png")
 enemy_image = pyglet.resource.image("Dragons.png")
 character_attack_image = pyglet.resource.image("Sword_Animations.png")
 
 class CharacterSeq():
     def __init__(self, image):
         self.seq = pyglet.image.ImageGrid(image, 4, 3)
-        self.seq_walk_up = self.seq[:2]
-        self.seq_walk_right = self.seq[3:5]
-        self.seq_walk_left = self.seq[6:8]
-        self.seq_walk_down = self.seq[9:11]
+        self.seq_walk_up = self.seq[:3]
+        self.seq_walk_right = self.seq[3:6]
+        self.seq_walk_left = self.seq[6:9]
+        self.seq_walk_down = self.seq[9:12]
 
         self.face_up = self.seq[1]
         self.face_right = self.seq[4]
@@ -69,10 +69,10 @@ class HeroImages(RaceImages):
         super().__init__(image=character_image, *args, **kwargs)
 
         self.seq_attack = pyglet.image.ImageGrid(character_attack_image, 4, 3)
-        self.seq_attack_up = self.seq_attack[:2]
-        self.seq_attack_right = self.seq_attack[3:5]
-        self.seq_attack_left = self.seq_attack[6:8]
-        self.seq_attack_down = self.seq_attack[9:11]
+        self.seq_attack_up = self.seq_attack[:3]
+        self.seq_attack_right = self.seq_attack[3:6]
+        self.seq_attack_left = self.seq_attack[6:9]
+        self.seq_attack_down = self.seq_attack[9:12]
         
         self.attack_up = pyglet.image.Animation.from_image_sequence(self.seq_attack_up, duration=0.1,loop=True)
         self.attack_down = pyglet.image.Animation.from_image_sequence(self.seq_attack_down, duration=0.1,loop=True)
