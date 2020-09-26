@@ -1,7 +1,9 @@
 import pyglet
 
-class GameEnvironment():
-    ''' A game enviornment - menu screen - level - etc.. '''
+
+class GameEnvironment:
+    """ A game enviornment - menu screen - level - etc.. """
+
     def __init__(self, name, window, debug=False):
 
         self.name = name
@@ -21,5 +23,5 @@ class GameEnvironment():
         if self.debug:
             self.debug_batch.draw()
 
-    def update(self,dt):
+    def update(self, dt):
         pass

@@ -8,12 +8,18 @@ from race import Race, Facing
 
 
 class Enemy(Race):
-    ''' Enemy Sprite Class '''
+    """ Enemy Sprite Class """
+
     def __init__(self, x=20, y=200, health=5, target=None, *args, **kwargs):
-        super().__init__(race_images=resources.EnemyImages(), 
-                        speed=0.5,
-                        x=x, y=y, health=health, 
-                        *args, **kwargs)
+        super().__init__(
+            race_images=resources.EnemyImages(),
+            speed=0.5,
+            x=x,
+            y=y,
+            health=health,
+            *args,
+            **kwargs
+        )
 
         self.target = target
 
@@ -22,20 +28,24 @@ class Enemy(Race):
         self.pattern_pos = 0
 
         # adjust hit box height
-        #print(self.height)
-        #self.hit_box.height -= 55
-        
+        # print(self.height)
+        # self.hit_box.height -= 55
+
     def update(self, dt):
 
-        if(not self.target):
+        if not self.target:
             self.pattern_pos += 1
-            if self.pattern[self.pattern_pos%len(self.pattern)] == Facing.LEFT:
-                self.target = CollisionObject(self.x-100, self.y, 1, 1, Interaction.BLOCKING)
+            if self.pattern[self.pattern_pos % len(self.pattern)] == Facing.LEFT:
+                self.target = CollisionObject(
+                    self.x - 100, self.y, 1, 1, Interaction.BLOCKING
+                )
             else:
-                self.target = CollisionObject(self.x+100, self.y, 1, 1, Interaction.BLOCKING)
-                #def __init__(self, x, y, height, width, interaction, group=None, batch=None, color=(255,255,255)):
+                self.target = CollisionObject(
+                    self.x + 100, self.y, 1, 1, Interaction.BLOCKING
+                )
+                # def __init__(self, x, y, height, width, interaction, group=None, batch=None, color=(255,255,255)):
 
-        if(not self.hit_box.collides_with(self.target)):
+        if not self.hit_box.collides_with(self.target):
             xmov = self.target.x - self.x
             ymov = self.target.y - self.y
 
@@ -51,20 +61,17 @@ class Enemy(Race):
             else:
                 self.move_y(ymov, absymov)
 
-
-
-        #self.moving.push(self.pattern[self.pattern_pos%len(self.pattern)])
-        #self.moving.push(Facing.LEFT)
+        # self.moving.push(self.pattern[self.pattern_pos%len(self.pattern)])
+        # self.moving.push(Facing.LEFT)
         super().update(dt)
-        if (self.moving):
+        if self.moving:
             self.moving.pop()
-        
 
     def move_y(self, ymov, absymov):
         self.current_speed = self.speed
         if absymov < self.speed:
             self.current_speed = absymov
-        
+
         if ymov < 0:
             self.moving.push(Facing.DOWN)
         else:
@@ -79,7 +86,3 @@ class Enemy(Race):
             self.moving.push(Facing.LEFT)
         else:
             self.moving.push(Facing.RIGHT)
-
-
-
-

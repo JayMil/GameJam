@@ -19,58 +19,221 @@ from movablerock import MovableRock
 
 from healthpotion import HealthPotion
 
+
 class LevelOne(Level):
     def __init__(self, window, *args, **kwargs):
-        super().__init__(background_image=resources.background_image , name="LevelOne", window=window, *args, **kwargs)
+        super().__init__(
+            background_image=resources.background_image,
+            name="LevelOne",
+            window=window,
+            *args,
+            **kwargs
+        )
 
-        
         # self.create_labels()
         # self.map = gamemap.GameMap(window, self.batch, self.background_layer)
 
-        tile_size=32
+        tile_size = 32
 
-        self.inventory = Inventory(batch=self.batch, foreground_underlay_layer=self.foreground_underlay_layer, foreground_layer=self.foreground_layer, foreground_overlay_layer=self.foreground_overlay_layer)
+        self.inventory = Inventory(
+            batch=self.batch,
+            foreground_underlay_layer=self.foreground_underlay_layer,
+            foreground_layer=self.foreground_layer,
+            foreground_overlay_layer=self.foreground_overlay_layer,
+        )
 
-        self.hero = Hero(self.inventory.update_inventory, x=tile_size*4, y=tile_size*15, 
-                            window=self.window, batch=self.batch, 
-                            group=self.foreground_layer)
-        
+        self.hero = Hero(
+            self.inventory.update_inventory,
+            x=tile_size * 4,
+            y=tile_size * 15,
+            window=self.window,
+            batch=self.batch,
+            group=self.foreground_layer,
+        )
 
         self.handlers.append(self.hero)
 
         self.enemies = []
-        self.enemies.append(Enemy(x=tile_size*8, y=tile_size*15, 
-                                    target=self.hero.hit_boxes["feet"],
-                                    window=self.window, batch=self.batch, 
-                                    group=self.foreground_layer))
-
+        self.enemies.append(
+            Enemy(
+                x=tile_size * 8,
+                y=tile_size * 15,
+                target=self.hero.hit_boxes["feet"],
+                window=self.window,
+                batch=self.batch,
+                group=self.foreground_layer,
+            )
+        )
 
         self.create_level_bounds()
-
 
     def create_level_bounds(self):
         """ Create object in environment """
         tile_size = 32
 
-        block_color=(100,100,100)
+        block_color = (100, 100, 100)
 
-        border_object_1 = CollisionObject(x=0, y=tile_size*5, height=288, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_2 = CollisionObject(x=0, y=448, height=256, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_3 = CollisionObject(x=tile_size*2, y=672, height=tile_size*1, width=352, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_4 = CollisionObject(x=416, y=tile_size*20, height=tile_size*2, width=tile_size*15, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_5 = CollisionObject(x=896, y=288, height=416, width=128, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_6 = CollisionObject(x=tile_size*2, y=tile_size*6, height=32, width=64, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_7 = CollisionObject(x=tile_size*23, y=tile_size*17, height=tile_size*2, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_8 = CollisionObject(x=tile_size*25, y=tile_size*14, height=tile_size*3, width=tile_size*1, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_9 = CollisionObject(x=tile_size*26, y=tile_size*18, height=tile_size*1, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_10 = CollisionObject(x=tile_size*0, y=tile_size*3, height=tile_size*2, width=tile_size*2, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_11 = CollisionObject(x=tile_size*0, y=tile_size*0, height=tile_size*3, width=tile_size*32, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_12 = CollisionObject(x=tile_size*4, y=tile_size*3, height=tile_size*2, width=tile_size*7, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_13 = CollisionObject(x=tile_size*28, y=tile_size*3, height=tile_size*4, width=tile_size*4, interaction=Interaction.BLOCKING, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_1 = CollisionObject(
+            x=0,
+            y=tile_size * 5,
+            height=288,
+            width=tile_size * 1,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_2 = CollisionObject(
+            x=0,
+            y=448,
+            height=256,
+            width=tile_size * 2,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_3 = CollisionObject(
+            x=tile_size * 2,
+            y=672,
+            height=tile_size * 1,
+            width=352,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_4 = CollisionObject(
+            x=416,
+            y=tile_size * 20,
+            height=tile_size * 2,
+            width=tile_size * 15,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_5 = CollisionObject(
+            x=896,
+            y=288,
+            height=416,
+            width=128,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_6 = CollisionObject(
+            x=tile_size * 2,
+            y=tile_size * 6,
+            height=32,
+            width=64,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_7 = CollisionObject(
+            x=tile_size * 23,
+            y=tile_size * 17,
+            height=tile_size * 2,
+            width=tile_size * 1,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_8 = CollisionObject(
+            x=tile_size * 25,
+            y=tile_size * 14,
+            height=tile_size * 3,
+            width=tile_size * 1,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_9 = CollisionObject(
+            x=tile_size * 26,
+            y=tile_size * 18,
+            height=tile_size * 1,
+            width=tile_size * 2,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_10 = CollisionObject(
+            x=tile_size * 0,
+            y=tile_size * 3,
+            height=tile_size * 2,
+            width=tile_size * 2,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_11 = CollisionObject(
+            x=tile_size * 0,
+            y=tile_size * 0,
+            height=tile_size * 3,
+            width=tile_size * 32,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_12 = CollisionObject(
+            x=tile_size * 4,
+            y=tile_size * 3,
+            height=tile_size * 2,
+            width=tile_size * 7,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_13 = CollisionObject(
+            x=tile_size * 28,
+            y=tile_size * 3,
+            height=tile_size * 4,
+            width=tile_size * 4,
+            interaction=Interaction.BLOCKING,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
 
-        border_object_14 = CollisionObject(x=tile_size*16, y=tile_size*13, height=tile_size*1, width=tile_size*12, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_15 = CollisionObject(x=tile_size*13, y=tile_size*12, height=tile_size*3, width=tile_size*3, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
-        border_object_16 = CollisionObject(x=tile_size*28, y=tile_size*7, height=tile_size*2, width=tile_size*4, interaction=Interaction.SHALLOW_WATER, group=self.background_overlay_layer, batch=self.debug_batch, color=block_color)
+        border_object_14 = CollisionObject(
+            x=tile_size * 16,
+            y=tile_size * 13,
+            height=tile_size * 1,
+            width=tile_size * 12,
+            interaction=Interaction.SHALLOW_WATER,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_15 = CollisionObject(
+            x=tile_size * 13,
+            y=tile_size * 12,
+            height=tile_size * 3,
+            width=tile_size * 3,
+            interaction=Interaction.SHALLOW_WATER,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
+        border_object_16 = CollisionObject(
+            x=tile_size * 28,
+            y=tile_size * 7,
+            height=tile_size * 2,
+            width=tile_size * 4,
+            interaction=Interaction.SHALLOW_WATER,
+            group=self.background_overlay_layer,
+            batch=self.debug_batch,
+            color=block_color,
+        )
 
         self.level_bounds.append(border_object_1)
         self.level_bounds.append(border_object_2)
@@ -89,15 +252,64 @@ class LevelOne(Level):
         self.level_bounds.append(border_object_15)
         self.level_bounds.append(border_object_16)
 
-        self.level_interactable_objects.append(MovableRock(tile_size*2,tile_size*4, self.window, group=self.background_overlay_layer, batch=self.batch))
-        self.level_interactable_objects.append(MovableRock(tile_size*26,tile_size*15, self.window, group=self.background_overlay_layer, batch=self.batch))
-        self.level_interactable_objects.append(MovableRock(tile_size*23,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(
+            MovableRock(
+                tile_size * 2,
+                tile_size * 4,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
+        self.level_interactable_objects.append(
+            MovableRock(
+                tile_size * 26,
+                tile_size * 15,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
+        self.level_interactable_objects.append(
+            MovableRock(
+                tile_size * 23,
+                tile_size * 10,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
 
-        self.level_interactable_objects.append(HealthPotion(tile_size*16,tile_size*10, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(
+            HealthPotion(
+                tile_size * 16,
+                tile_size * 10,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
 
-        self.level_interactable_objects.append(HealthPotion(tile_size*7,tile_size*8, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(
+            HealthPotion(
+                tile_size * 7,
+                tile_size * 8,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
 
-        self.level_interactable_objects.append(HealthPotion(tile_size*9,tile_size*13, self.window, group=self.background_overlay_layer, batch=self.batch))
+        self.level_interactable_objects.append(
+            HealthPotion(
+                tile_size * 9,
+                tile_size * 13,
+                self.window,
+                group=self.background_overlay_layer,
+                batch=self.batch,
+            )
+        )
+
     # def create_labels(self):
     #     ''' Create helper lables '''
     #     self.title = pyglet.text.Label('Top - View Proof of Concept',
@@ -106,7 +318,6 @@ class LevelOne(Level):
     #                                 x=self.window.width//2, y=self.window.height-30,
     #                                 anchor_x='center', batch=self.batch,
     #                                 group=self.foreground_layer)
-
 
     #     pyglet.text.Label('Move with direction keys',
     #                                 font_name='Times New Roman',
@@ -142,13 +353,19 @@ class LevelOne(Level):
         # self.map.update(dt, self.hero)
 
     def draw(self):
-        super().draw();
+        super().draw()
 
-        rectangle = pyglet.shapes.Rectangle(self.hero.hit_boxes["feet"].x, self.hero.hit_boxes["feet"].y, self.hero.hit_boxes["feet"].width, self.hero.hit_boxes["feet"].height, color=(255, 0, 0))
+        rectangle = pyglet.shapes.Rectangle(
+            self.hero.hit_boxes["feet"].x,
+            self.hero.hit_boxes["feet"].y,
+            self.hero.hit_boxes["feet"].width,
+            self.hero.hit_boxes["feet"].height,
+            color=(255, 0, 0),
+        )
         rectangle.opacity = 125
         rectangle.draw()
 
-        '''
+        """
         # DEBUG
         if DEBUG:
             pass
@@ -158,4 +375,4 @@ class LevelOne(Level):
             #rectangle = pyglet.shapes.Rectangle(self.hero.hit_box.x, self.hero.self.hit_boxes["feet"].yhit_box.y, self.hero.width, height, color=(255, 0, 0))
             #rectangle.opacity = 125
             #rectangle.draw()
-        '''
+        """

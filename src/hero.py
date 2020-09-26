@@ -9,24 +9,23 @@ from race import Race, Facing
 
 from inventory import InventoryType
 
+
 class Hero(Race):
-    ''' Hero Sprite Class '''
+    """ Hero Sprite Class """
+
     def __init__(self, update_inventory, x=20, y=200, health=5, *args, **kwargs):
-        super().__init__(race_images=resources.HeroImages(), x=x, y=y, health=health, *args, **kwargs)
-
-
+        super().__init__(
+            race_images=resources.HeroImages(), x=x, y=y, health=health, *args, **kwargs
+        )
 
         self.update_inventory = update_inventory
-        self.inventory.update({"health_potion":0})
-
+        self.inventory.update({"health_potion": 0})
 
         # make feet hit_box smaller so that the player can move around easier.
         self.hit_boxes["feet"].x += 42
         self.hit_boxes["feet"].y += 32
         self.hit_boxes["feet"].height = 5
         self.hit_boxes["feet"].width = 15
-    
-
 
     def update_stats(self, value, stat_type):
         if stat_type == InventoryType.HEALTH:
@@ -36,7 +35,7 @@ class Hero(Race):
                 self.health = 0
             else:
                 self.health += value
-            
+
             self.update_inventory(self.health, stat_type)
         elif stat_type == InventoryType.HEALING_POTIONS:
 
@@ -47,11 +46,7 @@ class Hero(Race):
 
             new_potion_count = self.inventory["health_potion"]
             self.update_inventory(new_potion_count, stat_type)
-         
 
-
-        
-        
     def update(self, dt):
         super().update(dt)
 
@@ -73,5 +68,3 @@ class Hero(Race):
             elif self.facing == Facing.DOWN:
                 if self.image != self.race_images.attack_down:
                     self.image = self.race_images.attack_down
-
-

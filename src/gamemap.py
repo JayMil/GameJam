@@ -5,14 +5,14 @@ import collisionobject
 from collisionobject import CollisionObject
 from collisionobject import Interaction
 
-class GameMap():
+
+class GameMap:
     def __init__(self, window, batch, group):
         self.window = window
         self.batch = batch
         self.group = group
         self.create_background()
         self.environment_objs = self.create_environment()
-
 
     def create_environment(self):
         """ Create object in environment """
@@ -25,22 +25,17 @@ class GameMap():
 
         objs.append(border_object_1)
 
-
         return objs
 
     def create_background(self):
-        ''' Create sprite for the background image '''
-        self.background_image = pyglet.sprite.Sprite(img=resources.background_image, 
-                                            batch=self.batch, group=self.group, 
-                                            x=0, y=0)
+        """ Create sprite for the background image """
+        self.background_image = pyglet.sprite.Sprite(
+            img=resources.background_image, batch=self.batch, group=self.group, x=0, y=0
+        )
 
-
-
-    def handle_enviornment_collisions(self,hero):
+    def handle_enviornment_collisions(self, hero):
         """ Detect and handle collisions with object and enviornment"""
         pass
 
     def update(self, dt):
         pass
-   
-
