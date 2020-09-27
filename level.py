@@ -34,19 +34,19 @@ class Level(GameEnvironment):
         """ Detect and handle collisions with object and enviornment"""
 
         for obj in self.level_bounds:
-            if obj.collides_with(other_object.hit_box):
+            if obj.collides_with(other_object.hit_boxes["feet"]):
                 if other_object.moving:
                     if other_object.moving.peek() == Facing.UP:
-                        other_object.hit_box.y -= other_object.current_speed
+                        other_object.update_pos(0, -other_object.current_speed)
                         break
                     elif other_object.moving.peek() == Facing.DOWN:
-                        other_object.hit_box.y += other_object.current_speed
+                        other_object.update_pos(0, other_object.current_speed)
                         break
                     elif other_object.moving.peek() == Facing.LEFT:
-                        other_object.hit_box.x += other_object.current_speed
+                        other_object.update_pos(other_object.current_speed, 0)
                         break
                     elif other_object.moving.peek() == Facing.RIGHT:
-                        other_object.hit_box.x -= other_object.current_speed
+                        other_object.update_pos(-other_object.current_speed, 0)
                         break
                     else:
                         print("Unhandled Collision!")
@@ -58,50 +58,49 @@ class Level(GameEnvironment):
 
 
         for obj in self.level_interactable_objects:
-            if obj.hit_box.collides_with(other_object.hit_box):
+            if obj.hit_box.collides_with(other_object.hit_boxes["feet"]):
                 if type(obj) is HealthPotion:
                     items_to_delete.append(obj)
                     other_object.update_stats(1, InventoryType.HEALING_POTIONS)
                 elif type(obj) is MovableRock:
                     if other_object.moving:
                         if other_object.moving.peek() == Facing.UP:
-                            other_object.hit_box.y -= other_object.current_speed * 0.75
+                            other_object.update_pos(0, other_object.current_speed * -0.75)
                             obj.y += other_object.current_speed * 0.25
                             obj.hit_box.y += other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.hit_box.y -= other_object.current_speed * 0.25
+                                other_object.update_pos(0, other_object.current_speed * -0.25)
                                 obj.y -= other_object.current_speed * 0.25
                                 obj.hit_box.y -= other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.DOWN:
-                            other_object.hit_box.y += other_object.current_speed * 0.75
+                            other_object.update_pos(0, other_object.current_speed * 0.75)
                             obj.y -= other_object.current_speed * 0.25
                             obj.hit_box.y -= other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-
-                                other_object.hit_box.y += other_object.current_speed * 0.25
+                                other_object.update_pos(0, other_object.current_speed * 0.25)
                                 obj.y += other_object.current_speed * 0.25
                                 obj.hit_box.y += other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.LEFT:
-                            other_object.hit_box.x += other_object.current_speed * 0.75
+                            other_object.update_pos(other_object.current_speed * 0.75, 0)
                             obj.x -= other_object.current_speed * 0.25
                             obj.hit_box.x -= other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.hit_box.x += other_object.current_speed * 0.25
+                                other_object.update_pos(other_object.current_speed * 0.25, 0)
                                 obj.x += other_object.current_speed * 0.25
                                 obj.hit_box.x += other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.RIGHT:
-                            other_object.hit_box.x -= other_object.current_speed * 0.75
+                            other_object.update_pos(other_object.current_speed * -0.75, 0)
                             obj.x += other_object.current_speed * 0.25
                             obj.hit_box.x += other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.hit_box.x -= other_object.current_speed * 0.25
+                                other_object.update_pos(other_object.current_speed * -0.25, 0)
                                 obj.x -= other_object.current_speed * 0.25
                                 obj.hit_box.x -= other_object.current_speed * 0.25
 

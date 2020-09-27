@@ -40,7 +40,7 @@ class LevelOne(Level):
 
         self.enemies = []
         self.enemies.append(Enemy(x=tile_size*8, y=tile_size*15, 
-                                    target=self.hero,
+                                    target=self.hero.hit_boxes["feet"],
                                     window=self.window, batch=self.batch, 
                                     group=self.foreground_layer))
 
@@ -144,6 +144,10 @@ class LevelOne(Level):
     def draw(self):
         super().draw();
 
+        rectangle = pyglet.shapes.Rectangle(self.hero.hit_boxes["feet"].x, self.hero.hit_boxes["feet"].y, self.hero.hit_boxes["feet"].width, self.hero.hit_boxes["feet"].height, color=(255, 0, 0))
+        rectangle.opacity = 125
+        rectangle.draw()
+
         '''
         # DEBUG
         if DEBUG:
@@ -151,7 +155,7 @@ class LevelOne(Level):
             #self.draw_env_bounds()
             # draw player pos dot
             #height = self.hero.height-14
-            #rectangle = pyglet.shapes.Rectangle(self.hero.hit_box.x, self.hero.hit_box.y, self.hero.width, height, color=(255, 0, 0))
+            #rectangle = pyglet.shapes.Rectangle(self.hero.hit_box.x, self.hero.self.hit_boxes["feet"].yhit_box.y, self.hero.width, height, color=(255, 0, 0))
             #rectangle.opacity = 125
             #rectangle.draw()
         '''
