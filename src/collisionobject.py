@@ -3,7 +3,6 @@ import pyglet
 
 
 class CollisionObject:
-
     """ Generic collision object class """
 
     def __init__(
