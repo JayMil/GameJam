@@ -1,5 +1,4 @@
-
-class Item():
+class Item:
     def __init__(self, parent):
         self.x = parent.x
         self.y = parent.y

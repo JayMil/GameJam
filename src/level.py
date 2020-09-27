@@ -13,6 +13,7 @@ from movablerock import MovableRock
 from inventory import InventoryType
 from collisionobject import Interaction
 
+
 class Level(GameEnvironment):
     def __init__(self, background_image, name, window, *args, **kwargs):
         super().__init__(name, window, *args, **kwargs)
@@ -22,14 +23,16 @@ class Level(GameEnvironment):
         self.level_bounds = []
         self.level_interactable_objects = []
 
-        
-
     def create_background(self):
-        ''' Create sprite for the background image '''
-        self.background_image = pyglet.sprite.Sprite(img=self.background_image, 
-                                            batch=self.batch, group=self.background_layer, 
-                                            x=0, y=0)
-            
+        """ Create sprite for the background image """
+        self.background_image = pyglet.sprite.Sprite(
+            img=self.background_image,
+            batch=self.batch,
+            group=self.background_layer,
+            x=0,
+            y=0,
+        )
+
     def handle_environment_collisions(self, other_object):
         """ Detect and handle collisions with object and enviornment"""
 
@@ -50,12 +53,11 @@ class Level(GameEnvironment):
                         break
                     else:
                         print("Unhandled Collision!")
-        
+
     def handle_interactable_object_collisions(self, other_object):
         """ Detect and handle collisions with object and enviornment"""
 
         items_to_delete = []
-
 
         for obj in self.level_interactable_objects:
             if obj.hit_box.collides_with(other_object.hit_boxes["feet"]):
@@ -65,56 +67,68 @@ class Level(GameEnvironment):
                 elif type(obj) is MovableRock:
                     if other_object.moving:
                         if other_object.moving.peek() == Facing.UP:
-                            other_object.update_pos(0, other_object.current_speed * -0.75)
+                            other_object.update_pos(
+                                0, other_object.current_speed * -0.75
+                            )
                             obj.y += other_object.current_speed * 0.25
                             obj.hit_box.y += other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.update_pos(0, other_object.current_speed * -0.25)
+                                other_object.update_pos(
+                                    0, other_object.current_speed * -0.25
+                                )
                                 obj.y -= other_object.current_speed * 0.25
                                 obj.hit_box.y -= other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.DOWN:
-                            other_object.update_pos(0, other_object.current_speed * 0.75)
+                            other_object.update_pos(
+                                0, other_object.current_speed * 0.75
+                            )
                             obj.y -= other_object.current_speed * 0.25
                             obj.hit_box.y -= other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.update_pos(0, other_object.current_speed * 0.25)
+                                other_object.update_pos(
+                                    0, other_object.current_speed * 0.25
+                                )
                                 obj.y += other_object.current_speed * 0.25
                                 obj.hit_box.y += other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.LEFT:
-                            other_object.update_pos(other_object.current_speed * 0.75, 0)
+                            other_object.update_pos(
+                                other_object.current_speed * 0.75, 0
+                            )
                             obj.x -= other_object.current_speed * 0.25
                             obj.hit_box.x -= other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.update_pos(other_object.current_speed * 0.25, 0)
+                                other_object.update_pos(
+                                    other_object.current_speed * 0.25, 0
+                                )
                                 obj.x += other_object.current_speed * 0.25
                                 obj.hit_box.x += other_object.current_speed * 0.25
 
                         elif other_object.moving.peek() == Facing.RIGHT:
-                            other_object.update_pos(other_object.current_speed * -0.75, 0)
+                            other_object.update_pos(
+                                other_object.current_speed * -0.75, 0
+                            )
                             obj.x += other_object.current_speed * 0.25
                             obj.hit_box.x += other_object.current_speed * 0.25
 
                             if self.check_if_rock_collides_with_bounds(obj):
-                                other_object.update_pos(other_object.current_speed * -0.25, 0)
+                                other_object.update_pos(
+                                    other_object.current_speed * -0.25, 0
+                                )
                                 obj.x -= other_object.current_speed * 0.25
                                 obj.hit_box.x -= other_object.current_speed * 0.25
 
                         else:
                             print("Unhandled Collision!")
 
-
         if items_to_delete != []:
             for obj in items_to_delete:
                 self.level_interactable_objects.remove(obj)
-                
 
-
-        
         # self.background_layer = pyglet.graphics.OrderedGroup(0)
         # self.background_overlay_layer = pyglet.graphics.OrderedGroup(1)
         # self.foreground_underlay_layer = pyglet.graphics.OrderedGroup(2)
@@ -124,20 +138,17 @@ class Level(GameEnvironment):
 
         # # self.create_labels()
         # self.map = gamemap.GameMap(window, self.batch, self.background_layer)
-        # self.hero = Hero(handle_sword_collisions=self.map.handle_sword_collisions, start_pos=(40, self.window.height-200), 
-        #                 window=self.window, batch=self.batch, 
-        #                 underlay_group=self.foreground_underlay_layer, 
+        # self.hero = Hero(handle_sword_collisions=self.map.handle_sword_collisions, start_pos=(40, self.window.height-200),
+        #                 window=self.window, batch=self.batch,
+        #                 underlay_group=self.foreground_underlay_layer,
         #                 overlay_group=self.foreground_overlay_layer,
         #                 group=self.foreground_layer)
 
         # self.window.push_handlers(self.hero)
 
-
-
     # def on_key_press(self, symbol, modifiers):
     #     if symbol == key.Q:
     #         self.on_exit()
-
 
     def check_if_rock_collides_with_bounds(self, obj):
         for level_bound in self.level_bounds:
@@ -145,7 +156,6 @@ class Level(GameEnvironment):
                 if level_bound.interaction == Interaction.BLOCKING:
                     return True
                     break
-      
 
     def update(self, dt):
         pass
@@ -155,7 +165,7 @@ class Level(GameEnvironment):
     def draw(self):
         super().draw()
 
-        '''
+        """
         # DEBUG
         if DEBUG:
             pass
@@ -165,4 +175,4 @@ class Level(GameEnvironment):
             #rectangle = pyglet.shapes.Rectangle(self.hero.hit_box.x, self.hero.hit_box.y, self.hero.width, height, color=(255, 0, 0))
             #rectangle.opacity = 125
             #rectangle.draw()
-        '''
+        """

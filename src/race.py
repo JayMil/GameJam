@@ -7,14 +7,15 @@ from collisionobject import CollisionObject
 
 from inventory import InventoryType
 
+
 class Race(PhysicalSpriteObject):
     def __init__(self, health, race_images, speed=2, *args, **kwargs):
-        super().__init__(img=race_images.face_down, 
-                        interaction=Interaction.BLOCKING, 
-                        *args, **kwargs)
+        super().__init__(
+            img=race_images.face_down, interaction=Interaction.BLOCKING, *args, **kwargs
+        )
 
         self.race_images = race_images
-        
+
         self.health = health
 
         self.moving = Stack()
@@ -25,8 +26,20 @@ class Race(PhysicalSpriteObject):
 
         self.inventory = {}
 
-        self.hit_boxes["feet"] = CollisionObject(self.x, self.y, self.width, self.height, self.hit_boxes["sprite"].interaction)
-        self.hit_boxes["body"] = CollisionObject(self.x, self.y, self.width, self.height, self.hit_boxes["sprite"].interaction)
+        self.hit_boxes["feet"] = CollisionObject(
+            self.x,
+            self.y,
+            self.width,
+            self.height,
+            self.hit_boxes["sprite"].interaction,
+        )
+        self.hit_boxes["body"] = CollisionObject(
+            self.x,
+            self.y,
+            self.width,
+            self.height,
+            self.hit_boxes["sprite"].interaction,
+        )
 
     def update(self, dt):
         speed = self.current_speed
@@ -74,22 +87,19 @@ class Race(PhysicalSpriteObject):
 
         if (self.hit_boxes["feet"].x + xdiff) < min_x:
             xdiff = self.hit_boxes["feet"].x - min_x
-        elif (self.hit_boxes["feet"].x+self.hit_boxes["feet"].width+xdiff) > max_x:
+        elif (self.hit_boxes["feet"].x + self.hit_boxes["feet"].width + xdiff) > max_x:
             xdiff = self.hit_boxes["feet"].x - (max_x - self.hit_boxes["feet"].width)
         if (self.hit_boxes["feet"].y + ydiff) < min_y:
             ydiff = self.hit_boxes["feet"].y - min_y
-        elif (self.hit_boxes["feet"].y+self.hit_boxes["feet"].height + ydiff) > max_y:
+        elif (self.hit_boxes["feet"].y + self.hit_boxes["feet"].height + ydiff) > max_y:
             ydiff = self.hit_boxes["feet"].y - (max_y - self.hit_boxes["feet"].height)
-
 
         for key in self.hit_boxes:
             self.hit_boxes[key].x += xdiff
             self.hit_boxes[key].y += ydiff
-            
+
         self.x += xdiff
         self.y += ydiff
-
-
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
@@ -103,7 +113,6 @@ class Race(PhysicalSpriteObject):
 
         if symbol == key.RIGHT:
             self.moving.push(Facing.RIGHT)
-
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
@@ -124,14 +133,15 @@ class Race(PhysicalSpriteObject):
                     self.update_stats(-1, InventoryType.HEALING_POTIONS)
                     self.update_stats(1, InventoryType.HEALTH)
 
-        if symbol == key.T:     
+        if symbol == key.T:
             if self.health > 1:
-                self.update_stats(-1, InventoryType.HEALTH)  
-            
+                self.update_stats(-1, InventoryType.HEALTH)
+
         if self.moving:
             self.facing = self.moving.peek()
 
-class Stack():
+
+class Stack:
     def __init__(self):
         self.list = []
 
@@ -142,15 +152,13 @@ class Stack():
         self.list.append(item)
 
     def pop(self, item=None):
-        if(item):
+        if item:
             self.list.remove(item)
         else:
             return self.list.pop()
 
     def peek(self):
-        return self.list[len(self.list)-1]
-
-
+        return self.list[len(self.list) - 1]
 
 
 class Facing(Enum):
@@ -158,4 +166,3 @@ class Facing(Enum):
     DOWN = 1
     LEFT = 2
     RIGHT = 3
-

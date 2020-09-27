@@ -7,6 +7,7 @@ START_GAME = 0
 EXIT = 1
 OPTIONS = 2
 
+
 class MainMenu(GameEnvironment):
     def __init__(self, on_start_game, on_exit, window):
         super().__init__("Main Menu", window)
@@ -17,36 +18,43 @@ class MainMenu(GameEnvironment):
 
         self.active_item = START_GAME
         self.finished = False
-        self.start_game = pyglet.text.Label('Start Game',
-                                    font_name='Times New Roman',
-                                    font_size=24,
-                                    x=self.window.width//2, y=(self.window.height//2)+20,
-                                    anchor_x='center', anchor_y='center',
-                                    batch=self.batch)
+        self.start_game = pyglet.text.Label(
+            "Start Game",
+            font_name="Times New Roman",
+            font_size=24,
+            x=self.window.width // 2,
+            y=(self.window.height // 2) + 20,
+            anchor_x="center",
+            anchor_y="center",
+            batch=self.batch,
+        )
 
-        self.exit = pyglet.text.Label('Exit',
-                                    font_name='Times New Roman',
-                                    font_size=24,
-                                    x=self.window.width//2, y=self.window.height//2-20,
-                                    anchor_x='center', anchor_y='center',
-                                    batch=self.batch)
+        self.exit = pyglet.text.Label(
+            "Exit",
+            font_name="Times New Roman",
+            font_size=24,
+            x=self.window.width // 2,
+            y=self.window.height // 2 - 20,
+            anchor_x="center",
+            anchor_y="center",
+            batch=self.batch,
+        )
 
     def update(self, dt):
-        if (self.active_item == START_GAME):
+        if self.active_item == START_GAME:
             self.start_game.bold = True
             self.exit.bold = False
         else:
             self.start_game.bold = False
             self.exit.bold = True
 
-        if (self.finished):
+        if self.finished:
             if self.active_item == START_GAME:
                 self.on_start_game()
                 self.finished = False
             else:
                 self.on_exit()
                 self.finished = False
-
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
@@ -59,11 +67,7 @@ class MainMenu(GameEnvironment):
         if self.active_item >= OPTIONS:
             self.active_item = 0
         elif self.active_item < 0:
-            self.active_item  = 1
+            self.active_item = 1
 
     def on_key_release(self, symbol, modifiers):
         pass
-
-
-
-
