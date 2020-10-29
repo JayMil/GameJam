@@ -26,6 +26,7 @@ class MovableRock(PhysicalSpriteObject):
         self.y = y
         self.hit_box.x = self.x + 11
         self.hit_box.y = self.y + 6
+        self.interaction = interaction
 
         self.hit_box.width = 10
         self.hit_box.height = 20
