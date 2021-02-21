@@ -4,7 +4,7 @@ run: black
 
 .PHONY: black
 black:
-	python3 -m black src
+	python3 -m black --exclude levelone.py src
 
 .PHONY: install_deps
 install_deps:
