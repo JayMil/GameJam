@@ -101,6 +101,16 @@ class Race(PhysicalSpriteObject):
         self.x += xdiff
         self.y += ydiff
 
+    def stop_movement_animation(self):
+        if self.image == self.race_images.walk_up:
+            self.image = self.race_images.face_up
+        elif self.image == self.race_images.walk_down:
+            self.image = self.race_images.face_down
+        elif self.image == self.race_images.walk_left:
+            self.image = self.race_images.face_left
+        elif self.image == self.race_images.walk_right:
+            self.image = self.race_images.face_right
+
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
             self.moving.push(Facing.UP)

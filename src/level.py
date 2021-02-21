@@ -46,14 +46,17 @@ class Level(GameEnvironment):
             matrix_y = math.floor(
                 (
                     self.screen_height
-                    - self.hero.hit_boxes["feet"].y
-                    - self.hero.hit_boxes["feet"].height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
                 )
                 / self.tile_size
             )
-            matrix_x1 = math.floor(self.hero.hit_boxes["feet"].x / self.tile_size)
+            matrix_x1 = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
             matrix_x2 = math.floor(
-                (self.hero.hit_boxes["feet"].x + self.hero.hit_boxes["feet"].width)
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
                 / self.tile_size
             )
 
@@ -63,11 +66,14 @@ class Level(GameEnvironment):
                 other_object.update_pos(0, -other_object.current_speed)
         elif other_object.moving.peek() == Facing.DOWN:
             matrix_y = math.floor(
-                (self.screen_height - self.hero.hit_boxes["feet"].y) / self.tile_size
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
             )
-            matrix_x1 = math.floor(self.hero.hit_boxes["feet"].x / self.tile_size)
+            matrix_x1 = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
             matrix_x2 = math.floor(
-                (self.hero.hit_boxes["feet"].x + self.hero.hit_boxes["feet"].width)
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
                 / self.tile_size
             )
             if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
@@ -75,17 +81,17 @@ class Level(GameEnvironment):
             elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
                 other_object.update_pos(0, other_object.current_speed)
         elif other_object.moving.peek() == Facing.LEFT:
-            matrix_x = math.floor(self.hero.hit_boxes["feet"].x / self.tile_size)
+            matrix_x = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
             matrix_y1 = math.floor(
                 (
                     self.screen_height
-                    - self.hero.hit_boxes["feet"].y
-                    - self.hero.hit_boxes["feet"].height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
                 )
                 / self.tile_size
             )
             matrix_y2 = math.floor(
-                (self.screen_height - self.hero.hit_boxes["feet"].y) / self.tile_size
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
             )
 
             if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
@@ -94,25 +100,121 @@ class Level(GameEnvironment):
                 other_object.update_pos(other_object.current_speed, 0)
         elif other_object.moving.peek() == Facing.RIGHT:
             matrix_x = math.floor(
-                (self.hero.hit_boxes["feet"].x + self.hero.hit_boxes["feet"].width)
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
                 / self.tile_size
             )
             matrix_y1 = math.floor(
                 (
                     self.screen_height
-                    - self.hero.hit_boxes["feet"].y
-                    - self.hero.hit_boxes["feet"].height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
                 )
                 / self.tile_size
             )
             matrix_y2 = math.floor(
-                (self.screen_height - self.hero.hit_boxes["feet"].y) / self.tile_size
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
             )
 
             if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
                 other_object.update_pos(-other_object.current_speed, 0)
             elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
                 other_object.update_pos(-other_object.current_speed, 0)
+
+    def handle_environment_collisions_enemy(self, other_object, collision_array):
+        """ Detect and handle collisions with object and enviornment"""
+
+        if other_object.facing == Facing.UP:
+            matrix_y = math.floor(
+                (
+                    self.screen_height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
+                )
+                / self.tile_size
+            )
+            matrix_x1 = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
+            matrix_x2 = math.floor(
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
+                / self.tile_size
+            )
+
+            if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
+                other_object.update_pos(0, -other_object.current_speed)
+                other_object.stop_movement_animation()
+            elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
+                other_object.update_pos(0, -other_object.current_speed)
+                other_object.stop_movement_animation()
+
+        elif other_object.facing == Facing.DOWN:
+            matrix_y = math.floor(
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
+            )
+            matrix_x1 = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
+            matrix_x2 = math.floor(
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
+                / self.tile_size
+            )
+            if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
+                other_object.update_pos(0, other_object.current_speed)
+                other_object.stop_movement_animation()
+            elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
+                other_object.update_pos(0, other_object.current_speed)
+                other_object.stop_movement_animation()
+        elif other_object.facing == Facing.LEFT:
+            matrix_x = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
+            matrix_y1 = math.floor(
+                (
+                    self.screen_height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
+                )
+                / self.tile_size
+            )
+            matrix_y2 = math.floor(
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
+            )
+
+            if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
+                other_object.update_pos(other_object.current_speed, 0)
+                other_object.stop_movement_animation()
+            elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
+                other_object.update_pos(other_object.current_speed, 0)
+                other_object.stop_movement_animation()
+        elif other_object.facing == Facing.RIGHT:
+            matrix_x = math.floor(
+                (
+                    other_object.hit_boxes["feet"].x
+                    + other_object.hit_boxes["feet"].width
+                )
+                / self.tile_size
+            )
+            matrix_y1 = math.floor(
+                (
+                    self.screen_height
+                    - other_object.hit_boxes["feet"].y
+                    - other_object.hit_boxes["feet"].height
+                )
+                / self.tile_size
+            )
+            matrix_y2 = math.floor(
+                (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
+            )
+
+            if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
+                other_object.update_pos(-other_object.current_speed, 0)
+                other_object.stop_movement_animation()
+            elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
+                other_object.update_pos(-other_object.current_speed, 0)
+                other_object.stop_movement_animation()
 
     def handle_interactable_object_collisions(self, other_object):
         """ Detect and handle collisions with object and enviornment"""
@@ -237,7 +339,6 @@ class Level(GameEnvironment):
         if corner1 == 1 or corner2 == 1 or corner3 == 1 or corner4 == 1:
             return Interaction.BLOCKING
         elif corner1 == 2 or corner2 == 2 or corner3 == 2 or corner4 == 2:
-
             return Interaction.SHALLOW_WATER
 
         return False
@@ -283,6 +384,7 @@ class Level(GameEnvironment):
 
         rock.interaction = Interaction.NONE
         rock.image = resources.rock_water_image
+        rock.group = self.foreground_underlay_layer
 
         self.environment_matrix[24 - y_pos][x_pos] = 0
 

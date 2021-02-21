@@ -61,6 +61,16 @@ class Enemy(Race):
             else:
                 self.move_y(ymov, absymov)
 
+        if self.current_speed == 0:
+            if self.image == self.race_images.walk_up:
+                self.image = self.race_images.face_up
+            elif self.image == self.race_images.walk_down:
+                self.image = self.race_images.face_down
+            elif self.image == self.race_images.walk_left:
+                self.image = self.race_images.face_left
+            elif self.image == self.race_images.walk_right:
+                self.image = self.race_images.face_right
+
         # self.moving.push(self.pattern[self.pattern_pos%len(self.pattern)])
         # self.moving.push(Facing.LEFT)
         super().update(dt)
