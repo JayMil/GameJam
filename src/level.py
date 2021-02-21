@@ -237,7 +237,6 @@ class Level(GameEnvironment):
         if corner1 == 1 or corner2 == 1 or corner3 == 1 or corner4 == 1:
             return Interaction.BLOCKING
         elif corner1 == 2 or corner2 == 2 or corner3 == 2 or corner4 == 2:
-
             return Interaction.SHALLOW_WATER
 
         return False
@@ -283,6 +282,7 @@ class Level(GameEnvironment):
 
         rock.interaction = Interaction.NONE
         rock.image = resources.rock_water_image
+        rock.group = self.foreground_underlay_layer
 
         self.environment_matrix[24 - y_pos][x_pos] = 0
 

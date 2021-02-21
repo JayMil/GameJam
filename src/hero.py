@@ -68,3 +68,4 @@ class Hero(Race):
             elif self.facing == Facing.DOWN:
                 if self.image != self.race_images.attack_down:
                     self.image = self.race_images.attack_down
+            self.attacking = True

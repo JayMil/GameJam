@@ -990,7 +990,7 @@ class LevelOne(Level):
 
         for enemy in self.enemies:
             enemy.update(dt)
-        # self.map.update(dt, self.hero)
+            # self.handle_environment_collisions(enemy, [1, 2])
 
     def draw(self):
         super().draw()
