@@ -62,8 +62,10 @@ class Level(GameEnvironment):
 
             if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
                 other_object.update_pos(0, -other_object.current_speed)
+                other_object.damage()
             elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
                 other_object.update_pos(0, -other_object.current_speed)
+                other_object.damage()
         elif other_object.moving.peek() == Facing.DOWN:
             matrix_y = math.floor(
                 (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
@@ -78,8 +80,10 @@ class Level(GameEnvironment):
             )
             if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
                 other_object.update_pos(0, other_object.current_speed)
+                other_object.damage()
             elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
                 other_object.update_pos(0, other_object.current_speed)
+                other_object.damage()
         elif other_object.moving.peek() == Facing.LEFT:
             matrix_x = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
             matrix_y1 = math.floor(
@@ -96,8 +100,10 @@ class Level(GameEnvironment):
 
             if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
                 other_object.update_pos(other_object.current_speed, 0)
+                other_object.damage()
             elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
                 other_object.update_pos(other_object.current_speed, 0)
+                other_object.damage()
         elif other_object.moving.peek() == Facing.RIGHT:
             matrix_x = math.floor(
                 (
@@ -120,8 +126,10 @@ class Level(GameEnvironment):
 
             if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
                 other_object.update_pos(-other_object.current_speed, 0)
+                other_object.damage()
             elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
                 other_object.update_pos(-other_object.current_speed, 0)
+                other_object.damage()
 
     def handle_environment_collisions_enemy(self, other_object, collision_array):
         """ Detect and handle collisions with object and enviornment"""

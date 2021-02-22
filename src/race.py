@@ -1,4 +1,6 @@
 from enum import Enum
+import threading
+import time
 from pyglet.window import key
 
 from physicalspriteobject import PhysicalSpriteObject
@@ -17,6 +19,7 @@ class Race(PhysicalSpriteObject):
         self.race_images = race_images
 
         self.health = health
+        self.taking_damage = False
 
         self.moving = Stack()
         self.facing = Facing.DOWN
@@ -47,36 +50,37 @@ class Race(PhysicalSpriteObject):
         ydiff = 0
         xdiff = 0
 
-        if self.moving:
-            self.facing = self.moving.peek()
-            if self.moving.peek() == Facing.UP:
-                if self.image != self.race_images.walk_up:
-                    self.image = self.race_images.walk_up
-                ydiff += speed
-            elif self.moving.peek() == Facing.DOWN:
-                if self.image != self.race_images.walk_down:
-                    self.image = self.race_images.walk_down
-                ydiff -= speed
-            elif self.moving.peek() == Facing.LEFT:
-                if self.image != self.race_images.walk_left:
-                    self.image = self.race_images.walk_left
-                xdiff -= speed
-            elif self.moving.peek() == Facing.RIGHT:
-                if self.image != self.race_images.walk_right:
-                    self.image = self.race_images.walk_right
-                xdiff += speed
-        else:
-            # if not moving, set to still image
-            if self.image == self.race_images.walk_up:
-                self.image = self.race_images.face_up
-            elif self.image == self.race_images.walk_down:
-                self.image = self.race_images.face_down
-            elif self.image == self.race_images.walk_left:
-                self.image = self.race_images.face_left
-            elif self.image == self.race_images.walk_right:
-                self.image = self.race_images.face_right
+        if not self.taking_damage:
+            if self.moving:
+                self.facing = self.moving.peek()
+                if self.moving.peek() == Facing.UP:
+                    if self.image != self.race_images.walk_up:
+                        self.image = self.race_images.walk_up
+                    ydiff += speed
+                elif self.moving.peek() == Facing.DOWN:
+                    if self.image != self.race_images.walk_down:
+                        self.image = self.race_images.walk_down
+                    ydiff -= speed
+                elif self.moving.peek() == Facing.LEFT:
+                    if self.image != self.race_images.walk_left:
+                        self.image = self.race_images.walk_left
+                    xdiff -= speed
+                elif self.moving.peek() == Facing.RIGHT:
+                    if self.image != self.race_images.walk_right:
+                        self.image = self.race_images.walk_right
+                    xdiff += speed
+            else:
+                # if not moving, set to still image
+                if self.image == self.race_images.walk_up:
+                    self.image = self.race_images.face_up
+                elif self.image == self.race_images.walk_down:
+                    self.image = self.race_images.face_down
+                elif self.image == self.race_images.walk_left:
+                    self.image = self.race_images.face_left
+                elif self.image == self.race_images.walk_right:
+                    self.image = self.race_images.face_right
 
-        self.update_pos(xdiff, ydiff)
+            self.update_pos(xdiff, ydiff)
 
     def update_pos(self, xdiff, ydiff):
         # prevent going out of border
@@ -111,18 +115,42 @@ class Race(PhysicalSpriteObject):
         elif self.image == self.race_images.walk_right:
             self.image = self.race_images.face_right
 
+    def damage(self):
+        if not self.taking_damage:
+            self.taking_damage = True
+            print("Taking damage")
+            self.stop_movement_animation()
+            if self.facing == Facing.UP:
+                self.image = self.race_images.damage_up
+            elif self.facing == Facing.DOWN:
+                self.image = self.race_images.damage_down
+            elif self.facing == Facing.LEFT:
+                self.image = self.race_images.damage_left
+            elif self.facing == Facing.RIGHT:
+                self.image = self.race_images.damage_right
+
+            if self.health > 0:
+                self.update_stats(-1, InventoryType.HEALTH)
+
+            threading.Thread(target=self.__damageTimeout).start()
+
+    def __damageTimeout(self):
+        time.sleep(self.race_images.damage_right.get_duration())
+        self.taking_damage = False
+
     def on_key_press(self, symbol, modifiers):
-        if symbol == key.UP:
-            self.moving.push(Facing.UP)
+        if not self.taking_damage:
+            if symbol == key.UP:
+                self.moving.push(Facing.UP)
 
-        if symbol == key.DOWN:
-            self.moving.push(Facing.DOWN)
+            if symbol == key.DOWN:
+                self.moving.push(Facing.DOWN)
 
-        if symbol == key.LEFT:
-            self.moving.push(Facing.LEFT)
+            if symbol == key.LEFT:
+                self.moving.push(Facing.LEFT)
 
-        if symbol == key.RIGHT:
-            self.moving.push(Facing.RIGHT)
+            if symbol == key.RIGHT:
+                self.moving.push(Facing.RIGHT)
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
@@ -163,7 +191,8 @@ class Stack:
 
     def pop(self, item=None):
         if item:
-            self.list.remove(item)
+            if item in self.list:
+                self.list.remove(item)
         else:
             return self.list.pop()
 
