@@ -1,5 +1,5 @@
 .PHONY: run
-run: black
+run:
 	python3 src/main.py
 
 .PHONY: black
