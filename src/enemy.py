@@ -6,6 +6,8 @@ from physicalspriteobject import PhysicalSpriteObject
 from collisionobject import Interaction
 from race import Race, Facing
 
+from fireball import Fireball
+
 
 class Enemy(Race):
     """ Enemy Sprite Class """
@@ -26,12 +28,28 @@ class Enemy(Race):
         self.pattern = [Facing.LEFT, Facing.RIGHT]
 
         self.pattern_pos = 0
+        self.fireball_shooting_timer = 300
+        self.fireballs = []
 
         # adjust hit box height
         # print(self.height)
         # self.hit_box.height -= 55
 
     def update(self, dt):
+        self.fireball_shooting_timer -= 1
+
+        items_to_delete = []
+        for fireball in self.fireballs:
+            fireball.x += fireball.x_addition
+            fireball.y += fireball.y_addition
+            x = fireball.x
+            y = fireball.y
+            if x > self.window.width or y > self.window.height or x < 0 or y < 0:
+                items_to_delete.append(fireball)
+
+        for obj in items_to_delete:
+            self.fireballs.remove(obj)
+            obj.delete()
 
         if not self.target:
             self.pattern_pos += 1
@@ -61,21 +79,35 @@ class Enemy(Race):
             else:
                 self.move_y(ymov, absymov)
 
-        if self.current_speed == 0:
+        if self.fireball_shooting_timer == 0:
+            self.fireball_shooting_timer = 120
             if self.image == self.race_images.walk_up:
-                self.image = self.race_images.face_up
+                self.create_fireball(0, 5)
             elif self.image == self.race_images.walk_down:
-                self.image = self.race_images.face_down
+                self.create_fireball(0, -5)
             elif self.image == self.race_images.walk_left:
-                self.image = self.race_images.face_left
+                self.create_fireball(-5, 0)
             elif self.image == self.race_images.walk_right:
-                self.image = self.race_images.face_right
+                self.create_fireball(5, 0)
 
         # self.moving.push(self.pattern[self.pattern_pos%len(self.pattern)])
         # self.moving.push(Facing.LEFT)
         super().update(dt)
         if self.moving:
             self.moving.pop()
+
+    def create_fireball(self, x_addition, y_addition):
+        self.fireballs.append(
+            Fireball(
+                x=self.x,
+                y=self.y,
+                y_addition=y_addition,
+                x_addition=x_addition,
+                window=self.window,
+                batch=self.batch,
+                group=self.group,
+            )
+        )
 
     def move_y(self, ymov, absymov):
         self.current_speed = self.speed
