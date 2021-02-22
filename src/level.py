@@ -312,9 +312,8 @@ class Level(GameEnvironment):
                             print("Unhandled Collision!")
                         break
 
-        if items_to_delete != []:
-            for obj in items_to_delete:
-                self.level_interactable_objects.remove(obj)
+        for obj in items_to_delete:
+            self.level_interactable_objects.remove(obj)
 
     def handle_sunk_rock_collisions(self, other_object):
         for obj in self.sunk_rocks:

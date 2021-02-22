@@ -29,6 +29,7 @@ health_potion = pyglet.resource.image("health_potion.png")
 
 background_image = pyglet.resource.image("Map1.png")
 rock_image = pyglet.resource.image("Normal_Rock.png")
+fireball_image = pyglet.resource.image("Fire_Ball.png")
 pink_rock_image = pyglet.resource.image("Pink_Rock.png")
 blue_rock_image = pyglet.resource.image("Blue_Rock.png")
 yellow_rock_image = pyglet.resource.image("Yellow_Rock.png")
@@ -112,3 +113,11 @@ class HeroImages(RaceImages):
 class EnemyImages(RaceImages):
     def __init__(self, *args, **kwargs):
         super().__init__(image=enemy_image, *args, **kwargs)
+
+
+class FireballImages:
+    def __init__(self, *args, **kwargs):
+        self.fireball_seq = pyglet.image.ImageGrid(fireball_image, 1, 8)
+        self.fireball_animation = pyglet.image.Animation.from_image_sequence(
+            self.fireball_seq, duration=0.1, loop=True
+        )
