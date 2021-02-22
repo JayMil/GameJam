@@ -37,7 +37,7 @@ rock_water_image = pyglet.resource.image("Rock_In_Water.png")
 
 character_image = pyglet.resource.image("Character2.png")
 enemy_image = pyglet.resource.image("Dragons.png")
-character_attack_image = pyglet.resource.image("Sword_Animations.png")
+character_attack_image = pyglet.resource.image("Sword_Animations_Update.png")
 
 
 class CharacterSeq:
@@ -81,22 +81,23 @@ class HeroImages(RaceImages):
         super().__init__(image=character_image, *args, **kwargs)
 
         self.seq_attack = pyglet.image.ImageGrid(character_attack_image, 4, 3)
-        self.seq_attack_up = self.seq_attack[:3]
-        self.seq_attack_right = self.seq_attack[3:6]
-        self.seq_attack_left = self.seq_attack[6:9]
-        self.seq_attack_down = self.seq_attack[9:12]
+
+        self.seq_attack_up = self.seq_attack[:3] + [self.face_up]
+        self.seq_attack_right = self.seq_attack[3:6] + [self.face_right]
+        self.seq_attack_left = self.seq_attack[6:9] + [self.face_left]
+        self.seq_attack_down = self.seq_attack[9:12] + [self.face_down]
 
         self.attack_up = pyglet.image.Animation.from_image_sequence(
-            self.seq_attack_up, duration=0.1, loop=True
+            self.seq_attack_up, duration=0.1, loop=False
         )
         self.attack_down = pyglet.image.Animation.from_image_sequence(
-            self.seq_attack_down, duration=0.1, loop=True
+            self.seq_attack_down, duration=0.1, loop=False
         )
         self.attack_left = pyglet.image.Animation.from_image_sequence(
-            self.seq_attack_left, duration=0.1, loop=True
+            self.seq_attack_left, duration=0.1, loop=False
         )
         self.attack_right = pyglet.image.Animation.from_image_sequence(
-            self.seq_attack_right, duration=0.1, loop=True
+            self.seq_attack_right, duration=0.1, loop=False
         )
 
         """
@@ -108,6 +109,10 @@ class HeroImages(RaceImages):
         self.sword_still = sword_still
 
         """
+
+    def __build_seq(self, seq, face):
+        rev = seq[::-1]
+        return seq + rev + [face]
 
 
 class EnemyImages(RaceImages):

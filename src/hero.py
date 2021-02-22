@@ -57,14 +57,12 @@ class Hero(Race):
         super().on_key_press(symbol, modifiers)
         if symbol == key.SPACE:
             if self.facing == Facing.RIGHT:
-                if self.image != self.race_images.attack_right:
-                    self.image = self.race_images.attack_right
+                self.image = self.race_images.attack_right
             elif self.facing == Facing.LEFT:
-                if self.image != self.race_images.attack_left:
-                    self.image = self.race_images.attack_left
+                self.image = self.race_images.attack_left
             elif self.facing == Facing.UP:
-                if self.image != self.race_images.attack_up:
-                    self.image = self.race_images.attack_up
+                self.image = self.race_images.attack_up
             elif self.facing == Facing.DOWN:
                 if self.image != self.race_images.attack_down:
                     self.image = self.race_images.attack_down
+
