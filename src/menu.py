@@ -2,6 +2,7 @@ import pyglet
 from pyglet.window import key
 
 from gameenvironment import GameEnvironment
+from resources import controls_image
 
 START_GAME = 0
 EXIT = 1
@@ -39,6 +40,15 @@ class MainMenu(GameEnvironment):
             anchor_y="center",
             batch=self.batch,
         )
+
+        scale = .75
+        self.controls = pyglet.sprite.Sprite(
+            img=controls_image,
+            batch=self.batch,
+            x=self.window.width // 2 - (400 * scale),
+            y=self.window.height // 2 - 90 - (controls_image.height * scale),
+        )
+        self.controls.scale = scale
 
     def update(self, dt):
         if self.active_item == START_GAME:
