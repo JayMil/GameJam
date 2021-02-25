@@ -4,6 +4,7 @@ from pyglet.window import key
 import levelone
 from menu import MainMenu
 from pause import PauseMenu
+from gameover import GameOverMenu
 
 DEBUG = False
 
@@ -24,12 +25,16 @@ class GameController:
             on_resume=self.start_game, on_restart=self.restart, on_exit=self.exit, window=self.window
         )
 
+        self.game_over_env = GameOverMenu(
+            on_restart=self.restart, on_exit=self.exit, window=self.window
+        )
+
         self.start_menu()
 
     def init_levelone(self):
         return levelone.LevelOne(self.window, on_pause=self.pause_game,
-                                 on_restart=self.restart, on_exit=self.exit,
-                                 debug=DEBUG)
+                                 on_restart=self.restart, on_game_over=self.game_over,
+                                 on_exit=self.exit, debug=DEBUG)
 
     def start_game(self):
         self.switch_env(self.levelone_env)
@@ -39,6 +44,9 @@ class GameController:
 
     def pause_game(self):
         self.switch_env(self.pause_env)
+
+    def game_over(self):
+        self.switch_env(self.game_over_env)
 
     def restart(self):
         self.deactivate_active_env()
