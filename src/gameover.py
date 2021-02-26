@@ -14,13 +14,31 @@ class GameOverMenu(GameEnvironment):
     def __init__(self, on_restart, on_exit, window):
         super().__init__("Game Over", window)
 
+        self.winner = False
+
         # functions to call when finished
         self.on_restart = on_restart
         self.on_exit = on_exit
 
+        # initially highlighted option
         self.active_item = RESTART
+
+        # if user has selected an option
         self.finished = False
-        self.resume = pyglet.text.Label(
+
+        # labels
+        self.win_status = pyglet.text.Label(
+            "",
+            font_name="Times New Roman",
+            font_size=60,
+            x=self.window.width // 2,
+            y=(self.window.height // 2) + 150,
+            anchor_x="center",
+            anchor_y="center",
+            batch=self.batch,
+        )
+
+        self.game_over = pyglet.text.Label(
             "Game Over",
             font_name="Times New Roman",
             font_size=40,
@@ -68,6 +86,11 @@ class GameOverMenu(GameEnvironment):
                 self.on_restart()
             else:
                 self.on_exit()
+
+        if self.winner:
+            self.win_status.text = "Winner!"
+        else:
+            self.win_status.text = "You Died!"
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:

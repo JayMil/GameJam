@@ -16,8 +16,10 @@ import math
 
 
 class Level(GameEnvironment):
-    def __init__(self, background_image, name, window, *args, **kwargs):
+    def __init__(self, background_image, name, window, on_game_over, *args, **kwargs):
         super().__init__(name, window, *args, **kwargs)
+
+        self.on_game_over = on_game_over
 
         self.background_image = background_image
         self.create_background()
@@ -60,12 +62,16 @@ class Level(GameEnvironment):
                 / self.tile_size
             )
 
-            if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
+            if (self.environment_matrix[matrix_y][matrix_x1] in collision_array
+            or self.environment_matrix[matrix_y][matrix_x2] in collision_array):
                 other_object.update_pos(0, -other_object.current_speed)
                 other_object.damage()
-            elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
-                other_object.update_pos(0, -other_object.current_speed)
-                other_object.damage()
+
+            if (self.environment_matrix[matrix_y][matrix_x1] == 3
+            or self.environment_matrix[matrix_y][matrix_x2] == 3):
+                self.on_game_over(True)
+
+
         elif other_object.moving.peek() == Facing.DOWN:
             matrix_y = math.floor(
                 (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
@@ -78,12 +84,15 @@ class Level(GameEnvironment):
                 )
                 / self.tile_size
             )
-            if self.environment_matrix[matrix_y][matrix_x1] in collision_array:
+            if (self.environment_matrix[matrix_y][matrix_x1] in collision_array
+            or self.environment_matrix[matrix_y][matrix_x2] in collision_array):
                 other_object.update_pos(0, other_object.current_speed)
                 other_object.damage()
-            elif self.environment_matrix[matrix_y][matrix_x2] in collision_array:
-                other_object.update_pos(0, other_object.current_speed)
-                other_object.damage()
+
+            if (self.environment_matrix[matrix_y][matrix_x1] == 3
+            or self.environment_matrix[matrix_y][matrix_x2] == 3):
+                self.on_game_over(True)
+
         elif other_object.moving.peek() == Facing.LEFT:
             matrix_x = math.floor(other_object.hit_boxes["feet"].x / self.tile_size)
             matrix_y1 = math.floor(
@@ -98,12 +107,15 @@ class Level(GameEnvironment):
                 (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
             )
 
-            if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
+            if (self.environment_matrix[matrix_y1][matrix_x] in collision_array
+            or self.environment_matrix[matrix_y2][matrix_x] in collision_array):
                 other_object.update_pos(other_object.current_speed, 0)
                 other_object.damage()
-            elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
-                other_object.update_pos(other_object.current_speed, 0)
-                other_object.damage()
+
+            if (self.environment_matrix[matrix_y1][matrix_x] == 3
+            or self.environment_matrix[matrix_y2][matrix_x] == 3):
+                self.on_game_over(True)
+
         elif other_object.moving.peek() == Facing.RIGHT:
             matrix_x = math.floor(
                 (
@@ -124,12 +136,14 @@ class Level(GameEnvironment):
                 (self.screen_height - other_object.hit_boxes["feet"].y) / self.tile_size
             )
 
-            if self.environment_matrix[matrix_y1][matrix_x] in collision_array:
+            if (self.environment_matrix[matrix_y1][matrix_x] in collision_array
+            or self.environment_matrix[matrix_y2][matrix_x] in collision_array):
                 other_object.update_pos(-other_object.current_speed, 0)
                 other_object.damage()
-            elif self.environment_matrix[matrix_y2][matrix_x] in collision_array:
-                other_object.update_pos(-other_object.current_speed, 0)
-                other_object.damage()
+
+            if (self.environment_matrix[matrix_y1][matrix_x] == 3
+            or self.environment_matrix[matrix_y2][matrix_x] == 3):
+                self.on_game_over(True)
 
     def handle_environment_collisions_enemy(self, other_object, collision_array):
         """ Detect and handle collisions with object and enviornment"""
@@ -330,7 +344,6 @@ class Level(GameEnvironment):
         return False
 
     def check_if_rock_collides_with_bounds(self, obj):
-
         x1 = math.floor((obj.hit_box.x + obj.hit_box.width) / self.tile_size)
         x2 = math.floor(obj.hit_box.x / self.tile_size)
         y1 = math.floor(
@@ -363,7 +376,6 @@ class Level(GameEnvironment):
         return overlap_area
 
     def sink_rock_in_water(self, rock, push_direction):
-
         tile_position_x = rock.x / self.tile_size
         tile_position_y = rock.y / self.tile_size
 

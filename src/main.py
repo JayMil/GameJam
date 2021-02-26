@@ -45,7 +45,8 @@ class GameController:
     def pause_game(self):
         self.switch_env(self.pause_env)
 
-    def game_over(self):
+    def game_over(self, winner):
+        self.game_over_env.winner = winner
         self.switch_env(self.game_over_env)
 
     def restart(self):
