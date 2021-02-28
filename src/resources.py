@@ -40,6 +40,8 @@ character_damage_image = pyglet.resource.image("CharacterDamage2.png")
 enemy_image = pyglet.resource.image("Dragons.png")
 character_attack_image = pyglet.resource.image("Sword_Animations_Update_1.1.png")
 
+controls_image = pyglet.resource.image("Controls.png")
+
 
 class CharacterSeq:
     def __init__(self, image):

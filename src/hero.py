@@ -47,6 +47,9 @@ class Hero(Race):
             new_potion_count = self.inventory["health_potion"]
             self.update_inventory(new_potion_count, stat_type)
 
+    def dead(self):
+        return self.health < 1
+
     def update(self, dt):
         super().update(dt)
 

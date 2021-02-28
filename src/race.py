@@ -118,7 +118,6 @@ class Race(PhysicalSpriteObject):
     def damage(self):
         if not self.taking_damage:
             self.taking_damage = True
-            print("Taking damage")
             self.stop_movement_animation()
             if self.facing == Facing.UP:
                 self.image = self.race_images.damage_up
@@ -140,29 +139,29 @@ class Race(PhysicalSpriteObject):
 
     def on_key_press(self, symbol, modifiers):
         if not self.taking_damage:
-            if symbol == key.UP:
+            if symbol in (key.UP, key.W):
                 self.moving.push(Facing.UP)
 
-            if symbol == key.DOWN:
+            if symbol in (key.DOWN, key.S):
                 self.moving.push(Facing.DOWN)
 
-            if symbol == key.LEFT:
+            if symbol in (key.LEFT, key.A):
                 self.moving.push(Facing.LEFT)
 
-            if symbol == key.RIGHT:
+            if symbol in (key.RIGHT, key.D):
                 self.moving.push(Facing.RIGHT)
 
     def on_key_release(self, symbol, modifiers):
-        if symbol == key.UP:
+        if symbol in (key.UP, key.W):
             self.moving.pop(Facing.UP)
 
-        if symbol == key.DOWN:
+        if symbol in (key.DOWN, key.S):
             self.moving.pop(Facing.DOWN)
 
-        if symbol == key.LEFT:
+        if symbol in (key.LEFT, key.A):
             self.moving.pop(Facing.LEFT)
 
-        if symbol == key.RIGHT:
+        if symbol in (key.RIGHT, key.D):
             self.moving.pop(Facing.RIGHT)
 
         if symbol == key.P:

@@ -3,6 +3,8 @@ from pyglet.window import key
 
 import levelone
 from menu import MainMenu
+from pause import PauseMenu
+from gameover import GameOverMenu
 
 DEBUG = False
 
@@ -13,31 +15,62 @@ class GameController:
     def __init__(self, window):
         self.window = window
         self.active_env = None
-        self.levelone_env = levelone.LevelOne(self.window, debug=DEBUG)
+        self.levelone_env = self.init_levelone()
+
         self.main_menu_env = MainMenu(
             on_start_game=self.start_game, on_exit=self.exit, window=self.window
         )
+
+        self.pause_env = PauseMenu(
+            on_resume=self.start_game, on_restart=self.restart, on_exit=self.exit, window=self.window
+        )
+
+        self.game_over_env = GameOverMenu(
+            on_restart=self.restart, on_exit=self.exit, window=self.window
+        )
+
         self.start_menu()
 
+    def init_levelone(self):
+        return levelone.LevelOne(self.window, on_pause=self.pause_game,
+                                 on_restart=self.restart, on_game_over=self.game_over,
+                                 on_exit=self.exit, debug=DEBUG)
+
     def start_game(self):
+        self.switch_env(self.levelone_env)
+
+    def start_menu(self):
+        self.switch_env(self.main_menu_env)
+
+    def pause_game(self):
+        self.switch_env(self.pause_env)
+
+    def game_over(self, winner):
+        self.game_over_env.winner = winner
+        self.switch_env(self.game_over_env)
+
+    def restart(self):
+        self.deactivate_active_env()
+        del self.levelone_env
+        self.levelone_env = self.init_levelone()
+        self.start_game()
+
+    def switch_env(self, env):
+        self.deactivate_active_env()
+        self.activate_env(env)
+
+    def deactivate_active_env(self):
         if self.active_env:
             for handler in self.active_env.handlers:
                 self.window.remove_handlers(handler)
             self.window.remove_handlers(self.active_env)
-        self.active_env = self.levelone_env
+
+    def activate_env(self, env):
+        self.active_env = env
         self.window.push_handlers(self.active_env)
         for handler in self.active_env.handlers:
             self.window.push_handlers(handler)
 
-    def start_menu(self):
-        if self.active_env:
-            for handler in self.active_env.handlers:
-                self.window.remove_handlers(handler)
-            self.window.remove_handlers(self.active_env)
-        self.active_env = self.main_menu_env
-        self.window.push_handlers(self.active_env)
-        for handler in self.active_env.handlers:
-            self.window.push_handlers(handler)
 
     def exit(self):
         pyglet.app.exit()

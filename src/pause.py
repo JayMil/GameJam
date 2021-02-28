@@ -4,27 +4,39 @@ from pyglet.window import key
 from gameenvironment import GameEnvironment
 from resources import controls_image
 
-START_GAME = 0
+RESUME = 0
 EXIT = 1
-OPTIONS = 2
+RESTART = 2
 
 
-class MainMenu(GameEnvironment):
-    def __init__(self, on_start_game, on_exit, window):
-        super().__init__("Main Menu", window)
+class PauseMenu(GameEnvironment):
+    def __init__(self, on_resume, on_restart, on_exit, window):
+        super().__init__("Pause", window)
 
         # functions to call when finished
-        self.on_start_game = on_start_game
+        self.on_resume = on_resume
+        self.on_restart = on_restart
         self.on_exit = on_exit
 
-        self.active_item = START_GAME
+        self.active_item = RESUME
         self.finished = False
-        self.start_game = pyglet.text.Label(
-            "Start Game",
+        self.resume = pyglet.text.Label(
+            "Resume",
             font_name="Times New Roman",
             font_size=24,
             x=self.window.width // 2,
-            y=(self.window.height // 2) + 20,
+            y=(self.window.height // 2) + 30,
+            anchor_x="center",
+            anchor_y="center",
+            batch=self.batch,
+        )
+
+        self.restart = pyglet.text.Label(
+            "Restart",
+            font_name="Times New Roman",
+            font_size=24,
+            x=self.window.width // 2,
+            y=(self.window.height // 2) - 10,
             anchor_x="center",
             anchor_y="center",
             batch=self.batch,
@@ -35,7 +47,7 @@ class MainMenu(GameEnvironment):
             font_name="Times New Roman",
             font_size=24,
             x=self.window.width // 2,
-            y=self.window.height // 2 - 20,
+            y=self.window.height // 2 - 50,
             anchor_x="center",
             anchor_y="center",
             batch=self.batch,
@@ -51,20 +63,29 @@ class MainMenu(GameEnvironment):
         self.controls.scale = scale
 
     def update(self, dt):
-        if self.active_item == START_GAME:
-            self.start_game.bold = True
+        if self.active_item == RESUME:
+            self.resume.bold = True
+            self.restart.bold = False
+            self.exit.bold = False
+        elif self.active_item == RESTART:
+            self.resume.bold = False
+            self.restart.bold = True
             self.exit.bold = False
         else:
-            self.start_game.bold = False
+            self.resume.bold = False
+            self.restart.bold = False
             self.exit.bold = True
 
         if self.finished:
-            if self.active_item == START_GAME:
-                self.on_start_game()
-                self.finished = False
+            self.finished = False
+            if self.active_item == RESUME:
+                print("Calling on_resume")
+                self.on_resume()
+            elif self.active_item == RESTART:
+                print("Calling on_restart")
+                self.on_restart()
             else:
                 self.on_exit()
-                self.finished = False
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
@@ -74,10 +95,10 @@ class MainMenu(GameEnvironment):
         elif symbol == key.ENTER:
             self.finished = True
 
-        if self.active_item >= OPTIONS:
+        if self.active_item > RESTART:
             self.active_item = 0
         elif self.active_item < 0:
-            self.active_item = 1
+            self.active_item = 2
 
     def on_key_release(self, symbol, modifiers):
         pass
